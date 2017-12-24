@@ -129,7 +129,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    join(BASE_DIR, 'static'),
+    join(BASE_DIR, 'staticfiles'),
 ]
 STATIC_ROOT = join(BASE_DIR, 'static')
 
