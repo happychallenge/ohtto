@@ -6,7 +6,7 @@ from PIL import Image
 from clarifai.rest import ClarifaiApp
 from .getGPS import get_lat_lon_dt
 
-app = ClarifaiApp()
+app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
 model = app.models.get('general-v1.3')
 forbidden = ['backlit', 'light', 'no person', 'silhouette', 'sky']
 
