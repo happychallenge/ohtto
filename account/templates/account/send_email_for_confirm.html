@@ -1,0 +1,41 @@
+{% extends 'login_base.html' %}
+
+{% load staticfiles i18n %}
+
+{% block content %}
+<style>
+.wrapper{
+    width: 500px;
+    height: 300px;
+    position: fixed;
+    margin-left: -250px;
+    margin-top: -150px;
+    top: 50%;
+    left: 50%;
+}
+</style>
+<div class="wrapper">
+    <div class="row">
+        <div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>사용자 등록</h4>
+                </div>
+                <div class="ibox-content">
+                    <h2 class="logo">I Remember Your Past</h2>
+                    <div class="signup">
+                        사용자 확인을 위해 메일을 {{email}} 보냈습니다. <br>
+                        24시간 내에 반드시 메일을 확인하시고 해당 링크를 눌러서 사용자 등록을 마무리 해 주시기 바랍니다. <br>
+                        감사합니다. <br>
+
+                        <a href="{% url 'home' %}" class='btn btn-primary'>홈으로 이동</a> 
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+

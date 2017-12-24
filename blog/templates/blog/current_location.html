@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  height: 800px;
+}
+</style>
+{% endblock css %}
+
+{% block main %}
+  <div id="map">
+      
+  </div>
+{% endblock main %}
+
+
+{% block javascript %}
+<script>
+var map;
+var markers = [];
+var locations = [];
+
+function initMap() {
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 6,
+      center: {lat: 33.024, lng: 110.887}
+  });
+
+  var bounds = new google.maps.LatLngBounds();
+
+  if (navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(position){
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var marker = new google.maps.Marker({
+        position: pos,
+        label: 'My',
+        map: map
+      });
+      markers.push(marker);
+      bounds.extend(marker.position);
+
+      window.location.href = "/blog/current_location_post/?lat=" + pos.lat + "&lng=" + pos.lng;
+      // var url_detail = "/blog/ajax_currentpost/?lat=" + pos.lat + "&lng=" + pos.lng;
+      // $.getJSON(url_detail) 
+      //   .done(function(data){
+      //     locations = data;
+      //   });
+
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+}
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXY6uFicQrbFZ-ddMHg2eQrFT9BAVqLOo&callback=initMap">
+</script>
+
+{% endblock javascript %}

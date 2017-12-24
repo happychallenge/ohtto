@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static bootstrap3 i18n %}
+
+
+{% block css %}
+<link href="{% static 'css/plugins/switchery/switchery.css' %}" rel="stylesheet">
+<style>
+.preview {
+  text-align: center;
+  position: relative;
+  color: #3897f0;
+  margin-bottom: 50px;
+}
+
+.preview .upload {
+  cursor: pointer;
+}
+
+.preview .preview-bg {
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  background-image: url(/static/images/sprites/abfe22.png);
+  background-size: 413px 391px;
+  background-position: -93px -52px;
+}
+
+.preview .preview-title {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -65%);
+}
+</style> 
+{% endblock css %}
+
+
+{% block main %}
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-offset-2 col-sm-8">
+              <div class="user-title">
+                <h1 class="form-title"> {% trans "New Post" %} </h1>
+              </div>
+
+              <form action="" method="post" enctype="multipart/form-data">
+                <div class="preview">
+                  <div class="upload">
+                    <span class="preview-bg"></span>
+                    <p class="preview-title"> {% trans "Add post picture" %} </p>
+                    {% if post %}
+                        <p><img src="{{post.photo.url}}" alt="" id="img_id" style="width: 300px; height: 300px; object-fit: cover"></p> 
+                    {% else %}
+                        <p><img src="" alt="" id="img_id" style="width: 300px; object-fit: cover"></p> 
+                    {% endif %}
+                  </div>
+                </div>
+
+                  {% csrf_token %}
+                  {% bootstrap_form form %}
+                  
+                  <input type="submit" class="btn btn-primary" />
+              </form>
+          </div>
+      </div>
+  </div>
+{% endblock main %}
+
+
+{% block modal %}
+<!-- Modal --> 
+<div class="modal" tabindex="-1" role="dialog" id="modal-post">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Content</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
+
+{% block javascript %}
+<script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+<script>
+    var elem = document.querySelector('.js-switch');
+    var init = new Switchery(elem, { color: '#ED5565' });
+</script>
+
+<script type="text/javascript">
+function upload_img(input){
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e){
+        $("#img_id").attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0])
+  }
+  $(".preview-bg").remove();
+  $(".preview-title").remove();
+}
+
+$("#id_pictures").change(function(){
+    upload_img(this);
+});
+
+$(document).on('click', '.upload', function(){
+    $("#id_pictures").click();
+});
+
+// $("#id_photo").attr("required", true);
+</script>
+{% endblock javascript %}

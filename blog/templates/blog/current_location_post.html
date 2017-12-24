@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  height: 800px;
+}
+</style>
+{% endblock css %}
+
+{% block main %}
+  <div class="row">
+      <div class="col-sm-4 content_list">
+          <div id="post-container" class="photo">
+            {% for post in post_list %}
+              {% include 'blog/partial/post_detail.html' with pList=True %}
+            {% endfor %}
+          </div>
+      </div>
+      <div class="col-sm-8 sidebar-map">
+          <div id="map" class="sidebar"></div>
+      </div>
+  </div>
+{% endblock main %}
+
+
+{% block modal %}
+<!-- Modal --> 
+<div class="modal" tabindex="-1" role="dialog" id="modal-post">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Content</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
+
+{% block javascript %}
+<script>
+var map;
+var markers = [];
+var bounds;
+
+function initMap() {
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 6,
+      center: {lat: 33.024, lng: 110.887}
+  });
+
+  bounds = new google.maps.LatLngBounds();
+
+  if (navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(position){
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var marker = new google.maps.Marker({
+        position: pos,
+        label: 'My',
+        map: map
+      });
+      markers.push(marker);
+      bounds.extend(marker.position);
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+
+  var locations = [
+    {% for post in post_list %}
+      {id: {{post.id}}, location: {lat: {{post.lat}}, lng: {{post.lng}} }, c_type:'{{post.c_cate}}' },
+    {% endfor %}
+  ];
+  
+  function getCircle(color){
+    return {
+      path: "M27.648 -41.399q0 -3.816 -2.7 -6.516t-6.516 -2.7 -6.516 2.7 -2.7 6.516 2.7 6.516 6.516 2.7 6.516 -2.7 2.7 -6.516zm9.216 0q0 3.924 -1.188 6.444l-13.104 27.864q-0.576 1.188 -1.71 1.872t-2.43 0.684 -2.43 -0.684 -1.674 -1.872l-13.14 -27.864q-1.188 -2.52 -1.188 -6.444 0 -7.632 5.4 -13.032t13.032 -5.4 13.032 5.4 5.4 13.032z",
+      scale: 0.6,
+      strokeWeight: 0.2,
+      strokeColor: 'black',
+      strokeOpacity: 1,
+      fillColor: color,
+      fillOpacity: 0.85,
+    }
+  }
+
+  var infoWindow = new google.maps.InfoWindow();
+
+  for (var i = 0; i < locations.length; i++) {
+      var position = locations[i].location;
+      var id = locations[i].id;
+      var title = locations[i].title;
+      var color = '#ac00e0';
+
+
+      var marker = new google.maps.Marker({
+          map: map,
+          position: position,
+          icon: getCircle(color),
+          animation: google.maps.Animation.DROP,
+          id: id
+      });
+
+      marker.addListener('click',  function() {
+          populateInfoWindow(this, infoWindow)
+      });
+
+      markers.push(marker);
+      bounds.extend(marker.position);
+  }
+
+  map.fitBounds(bounds)
+
+  // Add a marker clusterer to manage the markers.
+  var markerCluster = new MarkerClusterer(map, markers,
+      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+}
+
+function populateInfoWindow(marker, infoWindow) {
+    if(infoWindow.marker != marker){
+        infoWindow.marker = marker;
+        infoWindow.setContent('<div>' + marker.id + '</div>');
+        infoWindow.open(map, marker);
+
+        infoWindow.addListener('closeclick',function() {
+            infoWindow.setMarket(null);
+        });
+    }
+}
+
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXY6uFicQrbFZ-ddMHg2eQrFT9BAVqLOo&callback=initMap">
+</script>
+
+<script>
+$("div.content_list").on("click", ".btnMapMarker", function(){
+
+    var photo_id = $(this).attr('data-url');
+    animateMarker(photo_id);
+});
+
+function animateMarker(photo_id){
+    for (var i = 0; i < markers.length; i++) {
+        if(markers[i].id == photo_id){
+            markers[i].setAnimation(google.maps.Animation.BOUNCE);
+            map.setZoom(14);
+            map.setCenter(markers[i].position);
+        }
+    }
+}
+</script>
+
+<script>
+var loadForm = function () {
+  var btn = $(this);
+  $.ajax({
+    url: "", 
+    type: 'GET',
+    dataType: 'html',
+    beforeSend: function () {
+      $("#modal_post").modal("show");
+      console.log("Call before LoadForm");
+    },
+    success: function (data) {
+      $("#modal_post .modal_body").html(data);
+      console.log("Call LoadForm");
+    }
+  });
+};
+
+$(".content_add").click(loadForm);
+
+function displayImage(input){
+   if(input.files && input.files[0]){
+       var reader = new FileReader();
+
+       reader.onload = function(evt){
+          $("#id_pic_dis").attr('src', evt.target.result);
+       }
+
+       reader.readAsDataURL(input.files[0]);
+   } 
+}
+
+$("#id_picture").change(function(){
+    displayImage(this);
+});
+ 
+</script>
+{% endblock javascript %}

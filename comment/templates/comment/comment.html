@@ -1,0 +1,38 @@
+{% load static humanize %}
+{% for comment in comment_list %}
+    
+    <div class="social-comment commentCount">
+        <a href="" class="pull-left">
+            <img alt="image" class="img-circle" src="{% if comment.create_user.profile.picture %}{{ comment.create_user.profile.picture.url }}{% else %}{% static 'images/nouser.png' %}{% endif %}">
+        </a>
+        <div class="media-body">
+            {{comment.comment}} <br>
+            {{comment.create_dt|naturaltime }} 
+            <span class="badge badge-info">{{comment.create_user.first_name}}</span>
+
+            {% if comment.create_user == user %}
+                <button class="btn btn-default btn-xs pull-right btn_delete" data-url='{{comment.id}}'>x</button>
+            {% endif %}
+        </div>
+    </div>
+
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <form action="{% url 'comment:post_comment' %}" method="POST" class="commentAdd">
+        <div class="social-comment">
+            {% csrf_token %}
+            <a href="" class="pull-left">
+                <img alt="image" class="img-circle" src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'images/nouser.png' %}{% endif %}">
+            </a>
+            <div class="media-body">
+                <div>
+                    <textarea name="comment" class="form-control" placeholder="Write comment..."></textarea>
+                </div>
+                <input type="hidden" name="post" value="{{ post_id }}">
+            </div>
+        </div>
+    </form>
+{% else %}
+    <small> 커멘트를 달기 위해서는 <a href="{% url 'login' %}" class='btn btn-default btn-xs'> 로그인</a> 을 하시기 바랍니다. </small> 
+{% endif %}

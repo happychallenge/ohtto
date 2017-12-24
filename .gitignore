@@ -1,0 +1,6 @@
+*.pyc
+.idea
+.myenv
+*.ipynb
+.ipynb_checkpoints
+.DS_Store

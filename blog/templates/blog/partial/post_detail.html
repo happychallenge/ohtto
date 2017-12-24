@@ -1,0 +1,65 @@
+{% load static %}
+
+<div class="ibox float-e-margins" post-id="{{post.id}}">
+    <div class="ibox-title">
+        <a href="">
+            <strong>{{ post.author.first_name }}</strong>
+        </a>
+    </div>
+    <div class="ibox-content">
+        <div class="text-center">
+          {% for file in post.contents.all %}
+            <img alt="image" class="m-t-xs img-responsive" 
+            width="{% if pList %}100%{% else %}300px{% endif %}" 
+            src="{{file.file.url}}"/>
+          {% endfor %}
+        </div>
+        <div class="col-sm-12">
+            <p> {{post.id}} 
+            {% if post.text %}
+            {{post.text}}  
+            {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="ibox-content">
+        <button class="btn-info btn-circle btn-outline btn-md like" data-url="{{post.id}}">
+            <i class="fa fa-heart-o fa-3"></i>
+        </button>
+        <span class="like-count" id="lcount-{{post.id}}"> {{post.like_count}}</span> &nbsp;&nbsp;
+
+        <button class="btn-info btn-circle btn-outline btn-md comment" data-url="{{post.id}}">
+            <i class="fa fa-comment-o fa-3"></i>
+        </button>
+        <span class="comment-count" id="count-{{post.id}}"> {{post.comments.count}}</span> &nbsp;&nbsp;
+
+        <button class="btn-info btn-circle btn-outline btn-md bucket" data-url="{{post.id}}">
+            <i class="fa fa-diamond fa-3"></i>
+        </button>
+        <span class="bucket-count" id="bcount-{{post.id}}"> {{post.bucket_count}}</span> &nbsp;&nbsp;
+        
+    {% if pList %}
+        {% if post.lat and post.lat != 0.0 and post.lat is not None %}
+        <button class="btn-info btn-circle btn-outline btn-md btnMapMarker" data-url="{{post.id}}">
+            <i class="fa fa-map-marker fa-3"></i>
+        </button>
+        {% endif %}
+    {% endif %}
+
+
+    </div>
+{% if pList %}
+    {# AJAX COMMENT_LIST #}
+    <div class="social-footer comment_list" style="display:none;">
+        
+    </div>
+
+    {# Tag List #}
+    <div class="ibox-title">
+        {% for tag in post.tag_set.all %}
+            <span class="badge badge-info"> {{tag}} </span>
+        {% endfor %}
+    </div>
+{% endif %}
+</div>

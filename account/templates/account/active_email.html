@@ -1,0 +1,8 @@
+{% autoescape off %}
+안녕하세요. {{ user.username }} 님,
+
+Please click on the link to confirm your registration,
+등록을 마무리 하기 위해서 아래 링크를 눌러 주시기 바랍니다.
+
+http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+{% endautoescape %}
