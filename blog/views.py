@@ -11,6 +11,7 @@ from clarifai.rest import ClarifaiApp
 from .models import Post, Tag, Content, Theme, Bucket
 from .forms import PostForm
 from .getGPS import get_lat_lon_dt
+from .adjust_location import transform
 
 app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
 model = app.models.get('general-v1.3')
@@ -137,9 +138,10 @@ def post_add(request):
             # Read Position from Picture
                 image = Image.open(filename)
                 lat, lng, dt = get_lat_lon_dt(image)
-                if lat:
-                    content.lat = lat
-                    content.lng = lng
+                mgLat, mgLng = transform(lat, lng)
+                if mgLat:
+                    content.lat = mgLat
+                    content.lng = mgLng
                 if dt:
                     dt = parser.parse(dt)
                     content.taken_dt = dt
@@ -167,8 +169,8 @@ def post_add(request):
 
             tag_total = list(tag_total)
             post.tag_set.set(tag_total)
-            post.lat = lat
-            post.lng = lng
+            post.lat = mgLat
+            post.lng = mgLng
             post.save()
             
             return redirect('blog:index')

@@ -56,6 +56,7 @@
 <script src="{% static 'js/topmenu.js' %}"></script>
 <script type="text/javascript">
   var myLng, myLat;
+  var map_height;
   $("#btn_my_location").click(function(evt){
     evt.preventDefault();
 
@@ -75,8 +76,15 @@
     } else {
       handleLocationError(false, infoWindow, map.getCenter());
     }
+    map_height = $(window).height() - 60;
+    $("#map").height(map_height);
   }
 
+  window.addEventListener('resize', function(event) {
+    console.log("Window resize");
+    map_height = $(window).height() - 60;
+    $("#map").height(map_height);
+  });
 </script>
 {% block javascript %}
   
