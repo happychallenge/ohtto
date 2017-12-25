@@ -23,16 +23,9 @@ class Tag(models.Model):
 class Theme(models.Model):
     """docstring for Subject"""
     """ Subject """
-    PUBLIC = 'P'
-    PRIVATE = 'V'
-
-    STATUS = (
-        (PUBLIC, 'Public'),
-        (PRIVATE, 'Private'),
-    )
     name = models.CharField(max_length=30)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='themes')
-    status = models.CharField(max_length=1, choices=STATUS, default=PUBLIC)
+    status = models.BooleanField(default=True)
     create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

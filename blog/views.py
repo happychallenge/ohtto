@@ -49,10 +49,17 @@ def my_history(request):
 
 
 def user_theme_list(request, username, id):
-    user = get_user_model().objects.get(username=username)
     theme = get_object_or_404(Theme, id=id)
-    post_list = Post.objects.filter(author=user, theme=theme)
-    return render(request, 'blog/on_map.html', {'post_list':post_list})
+    if request.user.username == username:
+        post_list = Post.objects.filter(theme=theme)
+        context = {'post_list':post_list}
+    else:
+        if theme.status == True:
+            post_list = Post.objects.filter(theme=theme)
+            context = {'post_list':post_list}
+        else:
+            context = {'message': "You don't have a privilage to access these content"}
+    return render(request, 'blog/on_map.html', context)
 
 
 @login_required
