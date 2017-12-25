@@ -2612,7 +2612,7 @@ label.error {
 }
 .forum-container,
 .forum-post-container {
-  padding: 30px !important;
+  padding: 10px 20px !important;
 }
 .forum-item small {
   color: #999;

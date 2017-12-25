@@ -129,9 +129,9 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    join(BASE_DIR, 'staticfiles'),
+    join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = join(BASE_DIR, 'static')
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = join(BASE_DIR,  'media')

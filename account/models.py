@@ -9,9 +9,9 @@ class Profile(models.Model):
     """docstring for Person"""
     """ 기억할 인물에 대한 설명 """
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
-    nickname = models.CharField(max_length=30)
+    nickname = models.CharField(max_length=30, null=True, blank=True)
     birthdate = models.DateTimeField(_('Birth Date'), null=True, blank=True)
-    picture = models.ImageField(_('Profile Picture'), upload_to='person_profile/%Y/%m/',
+    picture = models.ImageField('', upload_to='person_profile/%Y/%m/',
                      null=True, blank=True)
     friend_set = models.ManyToManyField('self',
                                     blank=True,
@@ -21,7 +21,7 @@ class Profile(models.Model):
     create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.first_name
+        return self.nickname
 
     @property
     def get_follower(self):
@@ -45,9 +45,25 @@ class Profile(models.Model):
     def is_following(self, user):
         return user in self.get_following
 
+    @property
     def get_bucket_list(self):
         user = self.user
         return [i.post for i in user.buckets.all()]
+
+    @property
+    def bucket_count(self):
+        user = self.user
+        return user.buckets.count()
+
+    @property
+    def get_post_list(self):
+        user = self.user
+        return [i.post for i in user.posts.all()]
+
+    @property
+    def post_count(self):
+        user = self.user
+        return user.posts.count()
 
     def get_theme_list(self):
         user = self.user

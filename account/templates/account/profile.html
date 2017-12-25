@@ -1,46 +1,49 @@
 {% extends 'base.html' %}
-{% load static i18n %}
+{% load static i18n bootstrap3 %}
 
 {% block css %}
-
+<link rel="stylesheet" href="{% static 'css/picture.css' %}"> 
+<style>
+.profile{
+    margin-left: 15px;
+}
+</style>
 {% endblock css %}
+
 
 {% block main %}
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-sm-4 profile">
         <div class="ibox float-e-margins">
             {# FORM TITLE #}
             <div class="ibox-title">
-                <h5> Profile 변경 <small> 모든 곳에서 Profile 사진이 사용되니 꼭 등록을 해 주세요.</small></h5>
+                <h3> Profile <small> Please update profile picture.</small></h3>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
+                    
                 </div>
             </div>
             {# FORM CONTENT #}
             <div class="ibox-content">
                 {# FORM START #}
-                <h3 style="margin-top: 0">{% trans 'Profile Picture' %}  </h3>
-                <img src="{% if user.profile.picture %} {{ user.profile.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
-                    style="border-radius: 5px; margin-bottom: 1em;" width="150" id='image_existed'>
-
-                <p>사진을 변경하시려면 파일을 선택해 주시기 바랍니다.</p>
-                <form method="POST" enctype='multipart/form-data' class="form-horizontal" id="formUpload">
+                <form method="POST" enctype='multipart/form-data' class="form-horizontal" id="formProfile">
+                    
                     {% csrf_token %}
-                    {{ form }}
-                    <div class="form-group">
-                        <div class="col-sm-4">
-                            
-                        </div>
+                    {% bootstrap_form form %}
+                    <div class="preview">
+                      <div class="upload">
+                        <span class="preview-bg"></span>
+                        <p class="preview-title"> {% trans 'Profile Picture' %} </p>
+                        <img src="{% if user.profile.picture %} {{ user.profile.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
+                    style="border-radius: 5px; margin-bottom: 1em;" width="150" id='image_existed'>
+                      </div>
                     </div>
+                    <input type="submit" class='btn btn-primary' value='Confirm'>
                 </form>
-           
             </div>
         </div>
+    </div>
+    <div class="col-sm-7">
+        {% include 'account/person_policy.html' %}
     </div>
 </div>
 {% endblock main %}
@@ -132,7 +135,7 @@
             $('#id_y').val(cropData['y']);
             $('#id_height').val(cropData['height']);
             $('#id_width').val(cropData['width']);
-            $("#formUpload").submit();
+            // $("#formProfile").submit();
         });
     });
 </script>

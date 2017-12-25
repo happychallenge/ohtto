@@ -5,10 +5,16 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponse
 from PIL import Image
+from dateutil import parser
+from clarifai.rest import ClarifaiApp
 
 from .models import Post, Tag, Content, Theme, Bucket
 from .forms import PostForm
+from .getGPS import get_lat_lon_dt
 
+app = ClarifaiApp(api_key='b207516379df44bfbcd5ba1c32514b41')
+model = app.models.get('general-v1.3')
+forbidden = ['backlit', 'light', 'no person', 'silhouette', 'sky']
 
 # Create your views here.
 @login_required
@@ -105,10 +111,10 @@ def post_add(request):
             pictures = request.FILES.getlist('pictures')
             tag_total = set()
         # Multi Files
-            for file in pictures:
+            for filename in pictures:
                 content = Content()
             # Read Position from Picture
-                image = Image.open(file)
+                image = Image.open(filename)
                 lat, lng, dt = get_lat_lon_dt(image)
                 if lat:
                     content.lat = lat
@@ -117,11 +123,13 @@ def post_add(request):
                     dt = parser.parse(dt)
                     content.taken_dt = dt
 
-                w, h = image.size
-                image = image.resize((w//2, h//2), Image.ANTIALIAS)
-                image.save(file, 'JPEG', quality=90)
+                width, height = image.size
+                x = width * 0.5
+                y = height * 0.5
+                image.thumbnail((x, y), Image.ANTIALIAS)
+                image.save(filename, quality=90)
                 
-                content.file = file
+                content.file = filename
                 content.save()
                 post.contents.add(content)
 
@@ -133,7 +141,7 @@ def post_add(request):
                         if concept['name'] not in forbidden:
                             obj, created = Tag.objects.get_or_create(tag=concept['name'])
                             tag_array.append(obj)
-                content.tags.set(tag_array)
+                content.tag_set.set(tag_array)
                 tag_total.update(tag_array)
 
             tag_total = list(tag_total)
@@ -141,8 +149,7 @@ def post_add(request):
             post.lat = lat
             post.lng = lng
             post.save()
-
-
+            
             return redirect('blog:index')
 
     else:

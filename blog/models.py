@@ -38,6 +38,12 @@ class Theme(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def post_count(self):
+        return self.posts.count()
+
+    def get_theme_post(self):
+        return self.posts.all()
 
 class Content(models.Model):
     """docstring for Content"""
@@ -57,13 +63,13 @@ class Content(models.Model):
 class Post(models.Model):
     """docstring for Post"""
     """ 설명 """
-    theme = models.ForeignKey(Theme, blank=True, null=True)
+    theme = models.ForeignKey(Theme, blank=True, null=True, related_name='posts')
     text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     lat = models.FloatField(default=0, blank=True, null=True)
     lng = models.FloatField(default=0, blank=True, null=True)
     is_published = models.BooleanField(default=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='posts')
     create_dt = models.DateTimeField(auto_now_add=True)
     contents = models.ManyToManyField(Content)
     tag_set = models.ManyToManyField(Tag)
@@ -119,13 +125,13 @@ def file_upload():
     theme = Theme.objects.get(id=6)
 
     db_path = 'contents/2017/cc'
-    mypath = '/Users/happy/Django/simpleMap/media/contents/2017/cc'
+    mypath = '/Users/happy/Django/ohtto/media/contents/2017/kimchi'
     for file in listdir(mypath):
         if isfile(join(mypath, file)):
             fullpath = join(mypath,file)
             db_save_path = join(db_path, file)
 
-            if fullpath != '/Users/happy/Django/simpleMap/media/contents/2017/cc/.DS_Store':
+            if fullpath != '/Users/happy/Django/ohtto/media/contents/2017/kimchi/.DS_Store':
                 
                 post = Post()
                 post.author = user
@@ -134,10 +140,9 @@ def file_upload():
                 post.save()
 
                 content = Content()
-                content.file = db_save_path
                 image = Image.open(fullpath)
-
                 lat, lng, dt = get_lat_lon_dt(image)
+
                 if lat:
                     content.lat = lat
                     content.lng = lng
@@ -145,6 +150,13 @@ def file_upload():
                     dt = parser.parse(dt)
                     content.taken_dt = dt
 
+                width, height = image.size
+                x = width * 0.5
+                y = height * 0.5
+                image = image.thumbnail((x, y), Image.ANTIALIAS)
+                image.save(fullpath, quality=90)
+
+                content.file = db_save_path
                 content.save()
                 post.contents.add(content)
 

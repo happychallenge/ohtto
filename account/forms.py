@@ -118,23 +118,23 @@ class ChangePasswordForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+
     x = forms.FloatField(widget=forms.HiddenInput())
     y = forms.FloatField(widget=forms.HiddenInput())
     width = forms.FloatField(widget=forms.HiddenInput())
     height = forms.FloatField(widget=forms.HiddenInput())
-    # existed = forms.FloatField(widget=forms.HiddenInput())
 
     class Meta:
         model = Profile
-        fields = ['picture', 'x', 'y', 'width', 'height', ]
+        fields = [ 'nickname', 'picture', 'x', 'y', 'width', 'height', ]
         widgets = {
             'picture': forms.FileInput(attrs={
                 'accept': 'image/*'  # this is not an actual validation! don't rely on that!
             })
         }
 
-    def save(self, commit):
-        profile = super(ProfileForm, self).save(commit=commit)
+    def save(self):
+        profile = super(ProfileForm, self).save()
 
         if not profile.picture:
             return profile 

@@ -65,16 +65,16 @@ def activate(request, uidb64, token):
 
 @login_required
 def profile_edit(request):
+    profile = request.user.profile
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            profile = form.save(commit=False)
-            # profile.user = request.user
-            profile.save()
+            print(request.user.profile)
+            profile = form.save()
                         
             return redirect('profile_edit')
     else:
-        form = ProfileForm()
+        form = ProfileForm(instance=profile)
         context = {'form':form}
     return render(request, 'account/profile.html', context)
 

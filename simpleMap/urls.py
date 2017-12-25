@@ -17,10 +17,8 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.shortcuts import redirect
-# from django.conf.urls.static import static
-from django.views import static
-from django.contrib.auth import views as login_views
 
+from django.contrib.auth import views as login_views
 from account import views as signup_views
 
 urlpatterns = [
@@ -37,14 +35,27 @@ urlpatterns = [
     url(r'^logout', signup_views.logout, name='logout'),
 ]
 
-static_list = [
-    (settings.STATIC_URL, settings.STATIC_ROOT),
-    (settings.MEDIA_URL, settings.MEDIA_ROOT),
-]
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    STATICFILES_DIRS = [
+        join(settings.BASE_DIR, 'staticfiles'),
+    ]
+    STATIC_ROOT = join(settings.BASE_DIR,  'static')
+    from django.views import static
+    static_list = [
+        (settings.STATIC_URL, STATIC_ROOT),
+        (settings.MEDIA_URL, settings.MEDIA_ROOT),
+    ]
 
-for (prefix_url, root) in static_list:
-    if '://' not in prefix_url: # 외부 서버에서 서빙하는 것이 아니라면
-        prefix_url = prefix_url.lstrip('/')
-        url_pattern = r'^' + prefix_url + r'(?P<path>.+)'
-        pattern = url(url_pattern, static.serve, kwargs={'document_root': root})
-        urlpatterns.append(pattern)
+    for (prefix_url, root) in static_list:
+        if '://' not in prefix_url: # 외부 서버에서 서빙하는 것이 아니라면
+            prefix_url = prefix_url.lstrip('/')
+            url_pattern = r'^' + prefix_url + r'(?P<path>.+)'
+            pattern = url(url_pattern, static.serve, kwargs={'document_root': root})
+            urlpatterns.append(pattern)

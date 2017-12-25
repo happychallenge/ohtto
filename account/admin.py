@@ -6,7 +6,8 @@ from .models import Profile, Relation
 class ProfileAdmin(admin.ModelAdmin):
     class Meta:
         model = Profile
-    list_display = ['user', 'birthdate']
+    list_display = ['user', 'nickname', 'birthdate']
+    list_editable = ['nickname']
 
 
 @admin.register(Relation)
