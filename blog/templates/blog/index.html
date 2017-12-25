@@ -15,6 +15,19 @@
 .content_list{
   margin-left: 15px;
 }
+#floating-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 60px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 1px;
+/*  border: 1px solid #999;*/
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 15px;
+  padding: 3px;
+}
 </style>
 {% endblock css %}
 
@@ -30,6 +43,24 @@
       <div class="col-sm-8 sidebar-map">
           <div id="map" class="sidebar"></div>
       </div>
+    {% if tag %}
+      <div id="floating-panel">
+        <input type=button value="food" class="tag" data-url="#">
+      </div>
+    {% else %}
+      {% if pos %}
+        <div id="floating-panel">
+          <input type=button value="food" class="tag" data-url="{% url 'blog:cur_tag_list' 'food' %}"> 
+          <input type=button value="tour" class="tag" data-url="{% url 'blog:cur_tag_list' 'tour' %}"> 
+        </div>
+      {% else %}
+        <div id="floating-panel">
+          <input type=button value="food" class="tag" data-url="{% url 'blog:tag_list' 'food' %}"> 
+          <input type=button value="tour" class="tag" data-url="{% url 'blog:tag_list' 'tour' %}"> 
+        </div>
+      {% endif %}
+      
+    {% endif %}
   </div>
 {% endblock main %}
 
@@ -141,6 +172,11 @@ function populateInfoWindow(marker, infoWindow) {
         });
     }
 }
+
+$(document).on('click', '.tag', function(){
+  url = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
+  window.location.href = url;
+})
 </script>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 </script>

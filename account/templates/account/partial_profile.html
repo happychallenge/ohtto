@@ -1,0 +1,35 @@
+{% load static i18n bootstrap3 %}
+
+<div class="ibox float-e-margins">
+    {# FORM TITLE #}
+    <div class="ibox-title">
+        <h3> Profile <small> Please update profile picture.</small></h3>
+        <div class="ibox-tools">
+            
+        </div>
+    </div>
+    {# FORM CONTENT #}
+    <div class="ibox-content">
+        {# FORM START #}
+        <form method="POST" enctype='multipart/form-data' class="form-horizontal" id="formProfile">
+            
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="preview">
+              <div class="upload">
+                <span class="preview-bg"></span>
+                <p class="preview-title"> {% trans 'Profile Picture' %} </p>
+                <img src="{% if user.profile.picture %} {{ user.profile.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
+            style="border-radius: 5px; margin-bottom: 1em;" width="150" id='image_existed'>
+                {% if post %}
+                    <p><img src="{{post.photo.url}}" alt="" id="img_id" style="width: 300px; height: 300px; object-fit: cover"></p> 
+                {% else %}
+                    <p><img src="" alt="" id="img_id" style="width: 300px; object-fit: cover"></p> 
+                {% endif %}
+              </div>
+            </div>
+            <input type="submit" class='btn btn-primary' value='Confirm'>
+        </form>
+   
+    </div>
+</div>

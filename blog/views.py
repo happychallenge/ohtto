@@ -18,13 +18,21 @@ forbidden = ['backlit', 'light', 'no person', 'silhouette', 'sky']
 
 # Create your views here.
 @login_required
-def index(request):
+def index(request, tag=None):
     friend_set = request.user.profile.get_following
 
-    post_list = Post.objects.filter(is_published=True, author__profile__in=friend_set) \
-        .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-        .select_related('author__profile')[:50]
-    return render(request, 'blog/index.html', {'post_list': post_list})
+    if tag:
+        post_list = Post.objects.filter(is_published=True, author__profile__in=friend_set,
+                            tag_set__tag__iexact=tag) \
+            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
+            .select_related('author__profile')[:50]
+        context = {'post_list': post_list, 'tag': tag}
+    else:
+        post_list = Post.objects.filter(is_published=True, author__profile__in=friend_set) \
+            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
+            .select_related('author__profile')[:50]
+        context = {'post_list': post_list,}
+    return render(request, 'blog/index.html', context)
 
 
 def post_detail(request):
@@ -47,11 +55,24 @@ def user_theme_list(request, username, id):
 
 
 @login_required
-def current_location(request):
+def current_location(request,tag=None):
     lat = float(request.GET.get('lat'))
     lng = float(request.GET.get('lng'))
-    post_list = Post.objects.filter(is_published=True, lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3))
-    return render(request, 'blog/index.html', {'post_list': post_list})
+
+    if tag:
+        post_list = Post.objects.filter(is_published=True, 
+            lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3),
+            tag_set__tag__iexact=tag) \
+                .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
+                .select_related('author__profile')[:50]
+        context = {'post_list': post_list, 'tag': tag, 'pos': True}
+    else:
+        post_list = Post.objects.filter(is_published=True, 
+            lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3)) \
+                .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
+                .select_related('author__profile')[:50]
+        context = {'post_list': post_list, 'pos': True}
+    return render(request, 'blog/index.html', context)
 
 
 @login_required
