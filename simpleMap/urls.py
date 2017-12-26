@@ -37,16 +37,24 @@ urlpatterns = [
 
 if settings.DEBUG:
     import debug_toolbar
+    from os.path import join
+    from .settings.common import BASE_DIR
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+    STATICFILES_DIRS = [
+        join(BASE_DIR, 'static'),
+    ]
+
     from django.conf.urls.static import static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
+    from os.path import join
+    from .settings.common import BASE_DIR
     STATICFILES_DIRS = [
-        join(settings.BASE_DIR, 'staticfiles'),
+        join(BASE_DIR, 'staticfiles'),
     ]
-    STATIC_ROOT = join(settings.BASE_DIR,  'static')
+    STATIC_ROOT = join(BASE_DIR,  'static')
     from django.views import static
     static_list = [
         (settings.STATIC_URL, STATIC_ROOT),
