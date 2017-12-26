@@ -50,24 +50,36 @@
             </div>
         </div>
 
+    <!-- My Theme -->
         <div class="forum-title">
             <h3>My theme</h3>
         </div>
     {% for theme in user.profile.get_theme_list %}
         <div class="forum-item">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="forum-icon">
                         <i class="fa fa-shield"></i>
                     </div>
                     <a href="{% url 'blog:user_theme_list' user.username theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
                 </div>
-                <div class="col-md-2 forum-info">
+                <div class="col-md-1 forum-info">
                     <span class="views-number">
-                        <input type="checkbox" class="js-switch-{{forloop.counter}}" {% if theme.status %}checked{% endif %}>
+                        <input type="checkbox" class="js-switch1-{{forloop.counter}}" {% if theme.status %}checked{% endif %}>
                     </span>
                     <div>
-                        <small>is Public</small>
+                        <small>Public</small>
+                    </div>
+                </div>
+                
+                <div class="col-md-2 forum-info">
+                    <button class="btn btn-primary invite-person" data-url="{% url 'blog:invite_persons' theme.id %}">Invite</button>
+                </div>
+                <div class="col-md-3 forum-info">
+                    <div class="text-left">
+                    {% for invitee in theme.get_invitee_all %}
+                        <small>{{invitee.username}}</small>
+                    {% endfor %}
                     </div>
                 </div>
                 <div class="col-md-2 forum-info">
@@ -82,6 +94,37 @@
         </div>
     {% endfor %}
         
-
+        <div class="forum-title">
+            <h3>Invited</h3>
+        </div>
+    {% for theme in user.profile.get_invited_theme %}
+        <div class="forum-item">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="forum-icon">
+                        <i class="fa fa-shield"></i>
+                    </div>
+                    <a href="{% url 'blog:user_theme_list' theme.author.username theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
+                </div>
+                <div class="col-md-2 forum-info">
+                    <span class="views-number">
+                        <input type="checkbox" class="js-switch2-{{forloop.counter}}" {% if theme.status %}checked{% endif %}>
+                    </span>
+                    <div>
+                        <small>is Public</small>
+                    </div>
+                </div>
+                <div class="col-md-2 forum-info">
+                    <span class="views-number">
+                        {{theme.post_count}}
+                    </span>
+                    <div>
+                        <small>Posts</small>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    {% endfor %}
     </div>
 </div>

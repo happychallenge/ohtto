@@ -61,6 +61,11 @@ class Profile(models.Model):
         return [i.post for i in user.posts.all()]
 
     @property
+    def get_invited_theme(self):
+        user = self.user
+        return [i.theme for i in user.invitee_set.all()]
+
+    @property
     def post_count(self):
         user = self.user
         return user.posts.count()
@@ -97,6 +102,13 @@ class Profile(models.Model):
             Notification(notification_type=Notification.BUCKET, 
                 from_user=self.user, to_user=post.author,
                 post=post).delete()
+
+    def notify_theme_invited(self, theme, to_user):
+        if self.user != theme.author:
+            Notification(notification_type=Notification.INVITED,
+                    from_user=self.user, to_user=to_user, 
+                    theme=theme).save()
+
 
 class Relation(models.Model):
     FRIEND = 'F'

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Theme, Post, Content, Tag, Bucket
+from .models import Theme, Post, Content, Tag, Bucket, Invitee
 # Register your models here.
 @admin.register(Theme)
 class ThemeAdmin(admin.ModelAdmin):
@@ -37,3 +37,9 @@ class BucketAdmin(admin.ModelAdmin):
     class Meta:
         model = Bucket
     list_display = ['user', 'post']
+
+@admin.register(Invitee)
+class InviteeAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Invitee
+    list_display = ['id', 'user', 'theme']

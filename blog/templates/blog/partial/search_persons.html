@@ -1,0 +1,16 @@
+{% load static %}
+
+{% for person in person_list %}
+    <div class="child" id="{{person.id}}:{{person.nickname}}">
+        <div class="row">
+            <div style="float:left;padding:10px;">
+                <img alt="image" width="70px" class="img-circle img-responsive" src="{% if person.picture %}{{ person.picture.url }}{% else %}{% static 'images/nouser.png' %}{% endif %}">
+            </div>
+            <div style="float:left;padding:10px;">
+                <span>Nick Name : {{ person.nickname }}</span> <br/>
+                <span>Username : {{ person.user.username }}</span> <br>
+                <span>Email : {{ person.user.email }}</span> <br>
+            </div>
+        </div>
+    </div>
+{% endfor %}

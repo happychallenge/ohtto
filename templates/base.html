@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
@@ -54,38 +54,7 @@
 <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/topmenu.js' %}"></script>
-<script type="text/javascript">
-  var myLng, myLat;
-  var map_height;
-  $("#btn_my_location").click(function(evt){
-    evt.preventDefault();
-
-    window.location.href = "{% url 'blog:current_location' %}?lat=" + myLat + "&lng=" + myLng;
-  });
-
-  window.onload = function(){
-    if (navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(function(position){
-
-        myLat = position.coords.latitude;
-        myLng = position.coords.longitude;
-
-      }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
-      });
-    } else {
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-    map_height = $(window).height() - 60;
-    $("#map").height(map_height);
-  }
-
-  window.addEventListener('resize', function(event) {
-    console.log("Window resize");
-    map_height = $(window).height() - 60;
-    $("#map").height(map_height);
-  });
-</script>
+<script src="{% static 'js/gpsTransform.js' %}"></script>
 {% block javascript %}
   
 {% endblock javascript %}

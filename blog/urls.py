@@ -3,7 +3,10 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^search/(?P<tag>\w+)/$', views.index, name='tag_list'),
+    url(r'^search_tag/(?P<tag>\w+)/$', views.index, name='tag_list'),
+
+    url(r'^search_persons/$', views.search_persons, name='search_persons'),
+    url(r'^invite_persons/(?P<theme_id>\d+)/$', views.invite_persons, name='invite_persons'),
 
     url(r'^add/$', views.post_add, name='post_add'),
     url(r'^like/$', views.post_like, name='post_like'),

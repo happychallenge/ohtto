@@ -2,14 +2,16 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponse
 from PIL import Image
 from dateutil import parser
 from clarifai.rest import ClarifaiApp
 
-from .models import Post, Tag, Content, Theme, Bucket
+from .models import Post, Tag, Content, Theme, Bucket, Invitee
 from .forms import PostForm
+from account.models import Profile
 from .getGPS import get_lat_lon_dt
 from .adjust_location import transform
 
@@ -45,20 +47,24 @@ def post_detail(request):
 @login_required
 def my_history(request):
     post_list = Post.objects.filter(author=request.user)
-    return render(request, 'blog/on_map.html', {'post_list':post_list})
+    return render(request, 'blog/on_map.html', {'post_list':post_list, 'Mine': True})
 
 
 def user_theme_list(request, username, id):
     theme = get_object_or_404(Theme, id=id)
-    if request.user.username == username:
+    if request.user == theme.author:
         post_list = Post.objects.filter(theme=theme)
-        context = {'post_list':post_list}
+        context = {'post_list':post_list, 'theme': theme.name}
     else:
         if theme.status == True:
             post_list = Post.objects.filter(theme=theme)
-            context = {'post_list':post_list}
+            context = {'post_list':post_list, 'theme': theme.name}
         else:
-            context = {'message': "You don't have a privilage to access these content"}
+            if request.user in theme.get_invitee_all():
+                post_list = Post.objects.filter(theme=theme)
+                context = {'post_list':post_list, 'theme': theme.name}
+            else:
+                context = {'message': "You don't have a privilage to access these content"}
     return render(request, 'blog/on_map.html', context)
 
 
@@ -66,7 +72,7 @@ def user_theme_list(request, username, id):
 def current_location(request,tag=None):
     lat = float(request.GET.get('lat'))
     lng = float(request.GET.get('lng'))
-
+    print("Lat : ", lat, " Lng : ", lng)
     if tag:
         post_list = Post.objects.filter(is_published=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3),
@@ -187,5 +193,32 @@ def post_add(request):
         return render(request, 'blog/post_add.html', {'form': form})
 
 
+############################
+# Invite Person
+############################
+def search_persons(request):
+    search_query = request.GET.get('keyword')
+    if search_query:
+        person_list = Profile.objects.filter(nickname__contains = search_query)
+    html = render_to_string('blog/partial/search_persons.html', {
+            'person_list': person_list,
+        })
+    return JsonResponse(html, safe=False)
 
 
+def invite_persons(request, theme_id):
+    theme = get_object_or_404(Theme, id=theme_id)
+
+    if request.method == 'POST':
+        persons_id = request.POST.getlist('persons_id')
+
+        if persons_id:
+            for person_id in persons_id:
+                person = get_object_or_404(Profile, id=person_id)
+                to_user = person.user
+                obj, created = Invitee.objects.get_or_create(user=to_user, theme=theme)
+
+                if created:
+                    request.user.profile.notify_theme_invited(theme, to_user)
+
+    return redirect('profile_edit')
