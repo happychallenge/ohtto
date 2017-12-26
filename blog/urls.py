@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^search/current/(?P<tag>\w+)/$', views.current_location, name='cur_tag_list'),
 
     url(r'^myhistory/$', views.my_history, name='my_history'),
+    url(r'^friend_profile/(?P<username>[\w@-_\.]+)/$', views.friend_profile, name='friend_profile'),
 ]

@@ -10,12 +10,14 @@ class Notification(models.Model):
     COMMENTED = 'PC'
     BUCKET = 'PC'
     THEME = 'TM'
+    INVITED = 'IV'
 
     NOTIFICATION_TYPES = (
         (LIKED, 'Liked'),
         (COMMENTED, 'Commented'),
         (BUCKET, 'Bucket'),
         (THEME, 'Theme'),
+        (INVITED, 'Invited'),
     )
 
     _LIKED_TEMPLATE = '<a href="/user/{0}/">{1}</a> liked your post: <a href="/post/{2}/">{3}</a>' 

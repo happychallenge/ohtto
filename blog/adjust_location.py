@@ -24,9 +24,9 @@ def transform(wgLat, wgLng):
     return mgLat, mgLng
 
 def outOfChina(lat, lng):
-    if lng < 73.004 or lng > 134.6773:
+    if lng < 73.4904 or lng > 134.7773:
         return True
-    if lat < 18.8293 or lat > 53.3471:
+    if lat < 17.9993 or lat > 53.5609:
         return True
 
     if (lng > 125.3237 and lng < 136.4173) and (lat > 29.6093 and lat < 43.24):

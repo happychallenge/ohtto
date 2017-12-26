@@ -50,6 +50,15 @@ def my_history(request):
     return render(request, 'blog/on_map.html', {'post_list':post_list, 'Mine': True})
 
 
+def friend_profile(request, username):
+    friend = get_user_model().objects.get(username=username)
+
+    post_list = Post.objects.filter(author=friend, is_published=True) \
+            .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
+            .select_related('author__profile')[:30]
+    return render(request, 'blog/index.html', {'post_list':post_list, 'friend':friend, 'profile': True})
+
+
 def user_theme_list(request, username, id):
     theme = get_object_or_404(Theme, id=id)
     if request.user == theme.author:
@@ -163,7 +172,7 @@ def post_add(request):
                 x = width * 0.5
                 y = height * 0.5
                 image.thumbnail((x, y), Image.ANTIALIAS)
-                image.save(filename, quality=90)
+                image.save(filename, quality=80)
                 
                 content.file = filename
                 content.save()
@@ -221,4 +230,4 @@ def invite_persons(request, theme_id):
                 if created:
                     request.user.profile.notify_theme_invited(theme, to_user)
 
-    return redirect('profile_edit')
+    return redirect('user_profile')

@@ -58,13 +58,13 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
 
-        return redirect('profile_edit')
+        return redirect('user_profile')
     else:
         return render(request, 'account/auth_fail.html')
 
 
 @login_required
-def profile_edit(request):
+def user_profile(request):
     profile = request.user.profile
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -72,11 +72,11 @@ def profile_edit(request):
             print(request.user.profile)
             profile = form.save()
                         
-            return redirect('profile_edit')
+            return redirect('user_profile')
     else:
         form = ProfileForm(instance=profile)
         context = {'form':form}
-    return render(request, 'account/profile.html', context)
+    return render(request, 'account/user_profile.html', context)
 
 
 def logout(request):
@@ -113,7 +113,7 @@ def change_password(request):
             update_session_auth_hash(request, user)
             messages.add_message(request, messages.SUCCESS,
                                  'Your password was successfully changed.')
-            return redirect('account:profile_edit')
+            return redirect('user_profile')
 
     else:
         form = ChangePasswordForm(instance=user)

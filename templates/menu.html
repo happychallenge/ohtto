@@ -30,7 +30,7 @@
             </ul>
         </li>
 
-        <li><a href="{% url 'profile_edit' %}"><strong> {{user.first_name}} </strong></a></li>
+        <li><a href="{% url 'user_profile' %}"><strong> {{user.first_name}} </strong></a></li>
         <li><a href="{% url 'logout' %}">logout</a></li>
     {% else %}
         <li><a href="{% url 'login' %}">login</a></li> 

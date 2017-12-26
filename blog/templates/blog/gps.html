@@ -16,7 +16,6 @@ window.addEventListener('resize', function(event) {
 
 $("#btn_my_location").click(function(evt){
   evt.preventDefault();
-  console.log(myLat, myLng);
   window.location.href = "{% url 'blog:current_location' %}?lat=" + myLat + "&lng=" + myLng;
 });
 
@@ -27,7 +26,7 @@ function initMap() {
       center: {lat: 36.44, lng: 120.13}
   });
 
-  var bounds = new google.maps.LatLngBounds();
+  bounds = new google.maps.LatLngBounds();
 
   if (navigator.geolocation){
     navigator.geolocation.getCurrentPosition(function(position){
@@ -35,7 +34,6 @@ function initMap() {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
         // console.log(myLat, myLng);
-      console.log("Index html Before :" + lat + " : " + lng);
       var tempPos = transform(lat, lng);
       console.log("Index html" + tempPos);
       myLat = tempPos[0];
