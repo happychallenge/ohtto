@@ -27,7 +27,12 @@ def signup(request):
             user = form.save()
             # user.is_active = False
             # user.save()
-
+            user = authenticate(
+                    username=form.cleaned_data.get('email'),
+                    password=form.cleaned_data.get('password')
+                )
+            if user is not None and user.is_active:
+                auth.login(request, user)
             # current_site = get_current_site(request)
             # message = render_to_string('account/active_email.html', {
             #         'user': user, 'domain': current_site.domain,
@@ -41,7 +46,8 @@ def signup(request):
             # email.send()
             Theme.objects.create(name='General Life', author=user, status=True)
             return render(request, 'account/send_email_for_confirm.html', {'email': to_email})
-
+        else:
+            return render(request, 'account/signup.html', {'form':form})
     else:
         form = SignUpForm()
         return render(request, 'account/signup.html', {'form':form})
