@@ -15,7 +15,7 @@ from django.views.decorators.http import require_POST
 # Create your views here.
 from .forms import SignUpForm, ProfileForm, ChangePasswordForm
 from .tokens import account_activation_token
-
+from blog.models import Theme
 
 def signup(request):
 
@@ -24,21 +24,22 @@ def signup(request):
 
         if form.is_valid():
 
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
+            user = form.save()
+            # user.is_active = False
+            # user.save()
 
-            current_site = get_current_site(request)
-            message = render_to_string('account/active_email.html', {
-                    'user': user, 'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': account_activation_token.make_token(user),
-                })
+            # current_site = get_current_site(request)
+            # message = render_to_string('account/active_email.html', {
+            #         'user': user, 'domain': current_site.domain,
+            #         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #         'token': account_activation_token.make_token(user),
+            #     })
 
-            mail_subject = 'Activate your account of "IRememberYourPast.com".'
+            # mail_subject = 'Activate your account of "IRememberYourPast.com".'
             to_email = form.cleaned_data.get('email')
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
+            # email = EmailMessage(mail_subject, message, to=[to_email])
+            # email.send()
+            Theme.objects.create(name='General Life', author=user, status=True)
             return render(request, 'account/send_email_for_confirm.html', {'email': to_email})
 
     else:
