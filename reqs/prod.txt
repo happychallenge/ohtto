@@ -1,3 +1,4 @@
 -r commons.txt
 gunicorn
 django-storages
+bobo
