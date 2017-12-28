@@ -48,8 +48,8 @@ def _convert_to_degress(value):
 
 def get_lat_lon_dt(image):
     """Returns the latitude and longitude, if available, from the provided exif_data (obtained through get_exif_data above)"""
-    lat = None
-    lon = None
+    lat = 0.0
+    lon = 0.0
     datetime = None
 
     exif_data = get_exif_data(image)

@@ -1,4 +1,3 @@
 -r commons.txt
-dj-database-url
 gunicorn
-psycopg2
+django-storages boto

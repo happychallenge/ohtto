@@ -145,6 +145,7 @@ def post_bucket(request):
 
 @login_required
 def post_add(request):
+    mgLat, mgLng = (0.0, 0.0)
     if request.method == 'POST':
         form = PostForm(request.user, request.POST, request.FILES)
         if form.is_valid():
@@ -160,7 +161,9 @@ def post_add(request):
             # Read Position from Picture
                 image = Image.open(filename)
                 lat, lng, dt = get_lat_lon_dt(image)
-                mgLat, mgLng = transform(lat, lng)
+                if lat != 0.0:
+                    mgLat, mgLng = transform(lat, lng)
+
                 if mgLat:
                     content.lat = mgLat
                     content.lng = mgLng

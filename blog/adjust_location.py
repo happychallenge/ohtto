@@ -64,18 +64,20 @@ from .getGPS import get_lat_lon_dt
 
 if __name__ == "__main__":
 
-    mypath = '/Users/happy/Django/ohtto/media/drive/aa'
-    for file in listdir(mypath):
-        if isfile(join(mypath, file)):
-            fullpath = join(mypath,file)
-            print(fullpath)
+    # mypath = '/Users/happy/Django/ohtto/media/drive/aa'
+    # for file in listdir(mypath):
+    #     if isfile(join(mypath, file)):
+    #         fullpath = join(mypath,file)
+    #         print(fullpath)
 
-            if fullpath != '/Users/happy/Django/ohtto/media/drive/aa/.DS_Store':
-                image = Image.open(fullpath)
-                lat, lng, dt = get_lat_lon_dt(image)
-                print("Lat : ", lat, " Lng : ", lng, " Taken Time : ", dt)
+    #         if fullpath != '/Users/happy/Django/ohtto/media/drive/aa/.DS_Store':
+    fullpath = '/Users/happy/Django/ohtto/blog/aa.jpg'
+    image = Image.open(fullpath)
+    lat, lng, dt = get_lat_lon_dt(image)
+    print("Lat : ", lat, " Lng : ", lng, " Taken Time : ", dt)
 
-                mgLat, mgLng = transform(lat, lng)
-                print("Lat : ", mgLat, " Lng : ", mgLng, " Taken Time : ", dt)
-                print("")
+    if lat != 0.0:
+        mgLat, mgLng = transform(lat, lng)
+        print("Lat : ", mgLat, " Lng : ", mgLng, " Taken Time : ", dt)
+        print("")
 

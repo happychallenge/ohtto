@@ -3,3 +3,5 @@ django-bootstrap3
 pillow
 clarifai
 python-dateutil
+dj-database-url
+psycopg2

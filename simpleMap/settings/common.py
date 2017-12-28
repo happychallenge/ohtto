@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 from os.path import dirname, abspath, join
 from django.core.urlresolvers import reverse_lazy
+import dj_database_url
 
 # Build paths inside the project like this: join(BASE_DIR, ...)
 BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
@@ -84,12 +85,9 @@ WSGI_APPLICATION = 'simpleMap.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.parse('postgres://postgres:@localhost:5432/testdb')
 }
-
+# DATABASES['default'] = 
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -128,11 +126,11 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home')
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [ join(BASE_DIR, 'static'),]
-STATICFILES_DIRS = [
-    join(BASE_DIR, 'staticfiles'),
-]
-STATIC_ROOT = join(BASE_DIR,  'static')
+STATICFILES_DIRS = [ join(BASE_DIR, 'static'),]
+# STATICFILES_DIRS = [
+#     join(BASE_DIR, 'staticfiles'),
+# ]
+# STATIC_ROOT = join(BASE_DIR,  'static')
 
 
 MEDIA_URL = '/media/'
