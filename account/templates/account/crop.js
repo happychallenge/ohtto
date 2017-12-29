@@ -1,6 +1,13 @@
 <script>
+
+
+
 $(function(){
     // SCRIPT TO OPEN the MODAL With the Preview
+
+    $('#id_nickname').bind('input', function() { 
+        $("#btn-profile").show();
+    });
 
     $('#id_picture').change(function() {
         if(this.files && this.files[0]) {
@@ -11,6 +18,7 @@ $(function(){
             }
             reader.readAsDataURL(this.files[0]);
         }
+        $("#btn-profile").show();
     });
 
     // SCRIPTS TO HANDLE THE CROPPER BOX

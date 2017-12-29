@@ -16,7 +16,7 @@
         <div class="ibox float-e-margins">
             {# FORM TITLE #}
             <div class="ibox-title">
-                <h3> {% trans "Profile" %}  <small> {% trans "lease update profile picture." %}P</small></h3>
+                <h3> {% trans "Profile" %}  <small> {% trans "lease update profile picture." %}</small></h3>
                 <div class="ibox-tools">
                     
                 </div>
@@ -36,7 +36,7 @@
                     style="border-radius: 5px; margin-bottom: 1em;" width="150" id='image_existed'>
                       </div>
                     </div>
-                    <input type="submit" class='btn btn-primary' value='Confirm'>
+                    <input type="submit" class='btn btn-primary' value='Confirm' id="btn-profile" style="display: none;">
                 </form>
             </div>
         </div>
@@ -82,6 +82,7 @@
 <div class="modal fade" id="modal-theme">
     <div class="modal-dialog">
         <div class="modal-content">
+
         </div>
     </div>
 </div>
@@ -104,4 +105,5 @@
     var init = new Switchery(elem, { color: '#ED5565' });
 {% endfor %}
 </script>
+
 {% endblock javascript %}

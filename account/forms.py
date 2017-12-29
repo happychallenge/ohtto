@@ -119,10 +119,11 @@ class ChangePasswordForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
 
-    x = forms.FloatField(widget=forms.HiddenInput())
-    y = forms.FloatField(widget=forms.HiddenInput())
-    width = forms.FloatField(widget=forms.HiddenInput())
-    height = forms.FloatField(widget=forms.HiddenInput())
+    x = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    y = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    width = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    height = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    nickname = forms.CharField(label='Name')
 
     class Meta:
         model = Profile
@@ -139,10 +140,10 @@ class ProfileForm(forms.ModelForm):
         if not profile.picture:
             return profile 
 
-        x = int(self.cleaned_data.get('x', 0))
-        if not x:
+        if self.cleaned_data.get('x') is None:
             return profile
             
+        x = int(self.cleaned_data.get('x', 0))
         y = int(self.cleaned_data.get('y'))
         width = int(self.cleaned_data.get('width'))
         height = int(self.cleaned_data.get('height'))

@@ -53,14 +53,14 @@
           var email = $(this).val();
 
           $.ajax({
-            url: "/accounts/checkemail/", 
+            url: "/account/checkemail/", 
             data: {
                 'email': email,
             },
             dataType: 'json',
             success: function(data){
                 if(data.exists) {
-                   $("#id_email").val("기존에 등록된 Email이 존재합니다.");
+                   $("#id_email").val("{% trans 'This email is already registered.!!' %}");
                    $("#id_email").focus();
                 } 
             }

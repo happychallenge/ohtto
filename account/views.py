@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth import login, update_session_auth_hash, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
@@ -25,10 +25,13 @@ def signup(request):
 
         if form.is_valid():
 
-            user = form.save()
-            Relation.objects.create(from_user=user, to_user=user, status='F')
-            # user.is_active = False
-            # user.save()
+            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
+            first_name = form.cleaned_data.get('first_name')
+            password = form.cleaned_data.get('password')
+            User.objects.create_user(username=username, first_name=first_name, 
+                            password=password, email=email)
+
             user = authenticate(
                     username=form.cleaned_data.get('email'),
                     password=form.cleaned_data.get('password')
@@ -36,6 +39,10 @@ def signup(request):
 
             if user is not None and user.is_active:
                 auth.login(request, user)
+            
+                Relation.objects.create(from_user=user.profile, to_user=user.profile, status='F')
+                Theme.objects.create(name='General Life', author=user, public=True)
+            
             # current_site = get_current_site(request)
             # message = render_to_string('account/active_email.html', {
             #         'user': user, 'domain': current_site.domain,
@@ -44,11 +51,10 @@ def signup(request):
             #     })
 
             # mail_subject = 'Activate your account of "IRememberYourPast.com".'
-            to_email = form.cleaned_data.get('email')
             # email = EmailMessage(mail_subject, message, to=[to_email])
             # email.send()
-            Theme.objects.create(name='General Life', author=user, status=True)
-            return render(request, 'account/send_email_for_confirm.html', {'email': to_email})
+            
+            return render(request, 'account/send_email_for_confirm.html', {'email': email})
         else:
             return render(request, 'account/signup.html', {'form':form})
     else:
@@ -79,7 +85,6 @@ def user_profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            print(request.user.profile)
             profile = form.save()
                         
             return redirect('user_profile')
