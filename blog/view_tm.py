@@ -1,12 +1,40 @@
 from django.http import JsonResponse
-from django.shortcuts import redirect, get_object_or_404
-
+from django.shortcuts import redirect, get_object_or_404, render
+from django.contrib.auth.decorators import login_required
 from decorators import ajax_required
 from django.template.loader import render_to_string
 
 from account.models import Profile
-from .models import Theme, Invitee
-from .forms import ThemeForm
+from .models import Theme, Invitee, Post, Tag
+from .forms import ThemeForm, PostForm
+
+@login_required
+def post_edit(request, id):
+    post = Post.objects.prefetch_related('tag_set', 'contents').get(id=id) 
+                
+    if request.method == 'POST':
+        form = PostForm(request.user, request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            print(form)
+            tags = request.POST.get('tags')
+            print("Tags : ", tags)
+            tag_array = []
+            if tags:
+                tag_list = tags.split(',')
+                for tag in tag_list:
+                    tag = tag.strip()
+                    tagged, created = Tag.objects.get_or_create(tag=tag)
+                    tag_array.append(tagged)
+            post.tag_set.set(tag_array)
+
+            return redirect('home')
+    else:
+        form = PostForm(user=request.user, instance=post)
+        context = {'form': form, 'post': post}
+        return render(request, 'blog/post_add.html', context)
 
 @ajax_required
 def theme_add(request):

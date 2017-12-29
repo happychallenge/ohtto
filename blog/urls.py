@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^invite_persons/(?P<theme_id>\d+)/$', views.invite_persons, name='invite_persons'),
 
     url(r'^add/$', views.post_add, name='post_add'),
+    url(r'^edit/(?P<id>\d+)/$', view_tm.post_edit, name='post_edit'),
     url(r'^like/$', views.post_like, name='post_like'),
     url(r'^bucket/$', views.post_bucket, name='post_bucket'),
     url(r'^bucket_list/$', views.my_bucket_list, name='my_bucket_list'),

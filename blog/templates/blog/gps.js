@@ -111,7 +111,7 @@ function initMap() {
       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 }
 
-$(document).on('click', '.tag', function(){
+$(document).on('click', '.maptag', function(){
   url = $(this).attr('data-url') + "?lat=" + myLat + "&lng=" + myLng;
   window.location.href = url;
 })

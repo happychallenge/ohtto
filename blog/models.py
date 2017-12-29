@@ -26,7 +26,7 @@ class Theme(models.Model):
     """ Subject """
     name = models.CharField(_("Theme Name"), max_length=30)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='themes')
-    status = models.BooleanField(default=True)
+    public = models.BooleanField(default=True)
     invite_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                    blank=True,
                                    related_name='invite_user_set',
@@ -64,7 +64,7 @@ class Invitee(models.Model):
 class Content(models.Model):
     """docstring for Content"""
     """ Content """
-    file = models.FileField(upload_to='contents/%Y/%m/%d/')
+    file = models.ImageField(upload_to='contents/%Y/%m/%d/')
     address = models.CharField(max_length=100, blank=True, null=True)
     lat = models.FloatField(default=0)
     lng = models.FloatField(default=0)
@@ -84,7 +84,7 @@ class Post(models.Model):
     address = models.CharField(max_length=100, blank=True, null=True)
     lat = models.FloatField(default=0, blank=True, null=True)
     lng = models.FloatField(default=0, blank=True, null=True)
-    is_published = models.BooleanField(default=True)
+    is_public = models.BooleanField(default=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='posts')
     create_dt = models.DateTimeField(auto_now_add=True)
     contents = models.ManyToManyField(Content)
@@ -111,6 +111,12 @@ class Post(models.Model):
     @property
     def bucket_count(self):
         return self.bucket_user_set.count()
+
+    def get_contents(self):
+        return self.contents.all()
+
+    def get_tag_set(self):
+        return self.tag_set.all()
 
 
 class Like(models.Model):

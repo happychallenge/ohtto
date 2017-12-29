@@ -17,11 +17,8 @@
           {% endfor %}
         </div>
         <div class="col-sm-12">
-            <p> {{post.id}} <br>
-                Lat : {{post.lat}} <br>
-                Lng : {{post.lng}}
             {% if post.text %}
-            {{post.text}}  
+            <p>{{post.text}}  </p>
             {% endif %}
             </p>
         </div>

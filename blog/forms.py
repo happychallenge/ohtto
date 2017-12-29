@@ -4,17 +4,18 @@ from django.utils.translation import ugettext_lazy as _
 from .models import Post, Content, Theme
 
 class PostForm(forms.ModelForm):
-    pictures = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    is_published = forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch'}))
+    pictures = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    is_public = forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch'}))
     text = forms.CharField(label='Short Message', required=False,
             widget=forms.Textarea(attrs={
                     'class': 'post-new-content',
                     'rows': 3,
             })
     )
+
     class Meta:
         model = Post
-        fields = ['theme', 'pictures', 'text',  'is_published']
+        fields = ['theme', 'pictures', 'text',  'is_public']
 
     def __init__(self, user, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
@@ -23,8 +24,8 @@ class PostForm(forms.ModelForm):
 
 
 class ThemeForm(forms.ModelForm):
-    status = forms.BooleanField(label=_("Public"), required=False,
+    public = forms.BooleanField(label=_("Public"), required=False,
             initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch'}))
     class Meta:
         model = Theme
-        fields = ['name', 'status']
+        fields = ['name', 'public']

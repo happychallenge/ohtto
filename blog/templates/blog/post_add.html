@@ -4,7 +4,8 @@
 
 {% block css %}
 <link href="{% static 'css/plugins/switchery/switchery.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/picture.css' %}"> 
+<link href="{% static 'css/plugins/tagsinput/tagsinput.css' %}" rel="stylesheet">
+<link href="{% static 'css/picture.css' %}" rel="stylesheet" > 
 {% endblock css %}
 
 
@@ -16,23 +17,33 @@
                 <h1 class="form-title"> {% trans "New Post" %} </h1>
               </div>
 
-              <form action="" method="post" enctype="multipart/form-data">
+              <form action="" method="post" enctype="multipart/form-data" id="form-post">
                 <div class="preview">
                   <div class="upload">
                     <span class="preview-bg"></span>
                     <p class="preview-title"> {% trans "Add post picture" %} </p>
                     {% if post %}
-                        <p><img src="{{post.photo.url}}" alt="" id="img_id" style="width: 300px; height: 300px; object-fit: cover"></p> 
+                      {% for content in post.get_contents %}
+                        <img src="{{content.file.url}}" alt="" id="img_id" style="width: 300px; height: 300px; object-fit: cover">
+                      {% endfor %}
                     {% else %}
                         <p><img src="" alt="" id="img_id" style="width: 300px; object-fit: cover"></p> 
                     {% endif %}
                   </div>
                 </div>
 
-                  {% csrf_token %}
-                  {% bootstrap_form form %}
-                  
-                  <input type="submit" class="btn btn-primary" />
+                {% csrf_token %}
+                {% bootstrap_form form %}
+
+                {% if post %}
+                  <div class="form-group">
+                    <label class="control-label" for="id_tags">Tags</label><br>
+                    <input type="text" name="tags" class="form-control tagsinput" value="{{post.get_tag_set|join:","}}" title id="id_tags" data-role="tagsinput" /> 
+                  </div>
+                {% endif %}
+                
+                <input type="submit" id="btn_ok" class="btn btn-primary" value="Confirm" />
+         
               </form>
           </div>
       </div>
@@ -66,33 +77,16 @@
 
 {% block javascript %}
 {% include 'blog/gps.js' %}
+{% include 'blog/picture.js' %}
 <script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+<script src="{% static 'js/plugins/tagsinput/tagsinput.js' %}"></script>
 <script>
     var elem = document.querySelector('.js-switch');
     var init = new Switchery(elem, { color: '#1AB394' });
+
+    $('.tagsinput').tagsinput({
+        tagClass: 'label label-primary'
+    });
 </script>
 
-<script type="text/javascript">
-function upload_img(input){
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function(e){
-        $("#img_id").attr('src', e.target.result);
-    }
-    reader.readAsDataURL(input.files[0])
-  }
-  $(".preview-bg").remove();
-  $(".preview-title").remove();
-}
-
-$("#id_pictures").change(function(){
-    upload_img(this);
-});
-
-$(document).on('click', '.upload', function(){
-    $("#id_pictures").click();
-});
-
-// $("#id_photo").attr("required", true);
-</script>
 {% endblock javascript %}

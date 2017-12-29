@@ -25,13 +25,13 @@ def index(request, tag=None):
     friend_set = request.user.profile.get_following
 
     if tag:
-        post_list = Post.objects.filter(is_published=True, author__profile__in=friend_set,
+        post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set,
                             tag_set__tag__iexact=tag) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:50]
         context = {'post_list': post_list, 'tag': tag}
     else:
-        post_list = Post.objects.filter(is_published=True, author__profile__in=friend_set) \
+        post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:50]
         context = {'post_list': post_list,}
@@ -53,7 +53,7 @@ def my_history(request):
 def friend_profile(request, username):
     friend = get_user_model().objects.get(username=username)
 
-    post_list = Post.objects.filter(author=friend, is_published=True) \
+    post_list = Post.objects.filter(author=friend, is_public=True) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
             .select_related('author__profile')[:30]
     return render(request, 'blog/index.html', {'post_list':post_list, 'friend':friend, 'profile': True})
@@ -65,7 +65,7 @@ def user_theme_list(request, username, id):
         post_list = Post.objects.filter(theme=theme)
         context = {'post_list':post_list, 'theme': theme.name}
     else:
-        if theme.status == True:
+        if theme.public == True:
             post_list = Post.objects.filter(theme=theme)
             context = {'post_list':post_list, 'theme': theme.name}
         else:
@@ -83,14 +83,14 @@ def current_location(request,tag=None):
     lng = float(request.GET.get('lng'))
     print("Lat : ", lat, " Lng : ", lng)
     if tag:
-        post_list = Post.objects.filter(is_published=True, 
+        post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3),
             tag_set__tag__iexact=tag) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
         context = {'post_list': post_list, 'tag': tag, 'pos': True}
     else:
-        post_list = Post.objects.filter(is_published=True, 
+        post_list = Post.objects.filter(is_public=True, 
             lat__range=(lat - 0.3, lat + 0.3), lng__range=(lng - 0.3, lng + 0.3)) \
                 .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
                 .select_related('author__profile')[:50]
@@ -198,7 +198,7 @@ def post_add(request):
             post.lng = mgLng
             post.save()
             
-            return redirect('blog:index')
+            return redirect('blog:post_edit',post.id)
 
     else:
         form = PostForm(user=request.user)

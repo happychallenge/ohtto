@@ -6,9 +6,9 @@ from .models import Theme, Post, Content, Tag, Bucket, Invitee
 class ThemeAdmin(admin.ModelAdmin):
     class Meta:
         model = Theme
-    list_display = ['id', 'name', 'author', 'status']
+    list_display = ['id', 'name', 'author', 'public']
     list_display_links = ['name']
-    list_editable = ['status']
+    list_editable = ['public']
 
 
 @admin.register(Post)
