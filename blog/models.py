@@ -2,6 +2,7 @@ from dateutil import parser
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 from clarifai.rest import ClarifaiApp
 from .getGPS import get_lat_lon_dt
@@ -23,7 +24,7 @@ class Tag(models.Model):
 class Theme(models.Model):
     """docstring for Subject"""
     """ Subject """
-    name = models.CharField(max_length=30)
+    name = models.CharField(_("Theme Name"), max_length=30)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='themes')
     status = models.BooleanField(default=True)
     invite_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
@@ -63,7 +64,7 @@ class Invitee(models.Model):
 class Content(models.Model):
     """docstring for Content"""
     """ Content """
-    file = models.FileField(upload_to='contents/%Y/%m/')
+    file = models.FileField(upload_to='contents/%Y/%m/%d/')
     address = models.CharField(max_length=100, blank=True, null=True)
     lat = models.FloatField(default=0)
     lng = models.FloatField(default=0)

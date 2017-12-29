@@ -69,12 +69,30 @@
 
 
 {% block modal %}
-
+<div class="modal fade" id="modal-theme">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type='button' data-dismiss='modal' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                </button>
+                <h4 class="modal-title">Append My theme</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type='button' class="btn btn-default" data-dismiss='modal'>Cancel</button>
+                <button type='button' class="btn btn-primary js-crop-and-upload" data-dismiss='modal'>Crop and Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock modal %}
 
 
 {% block javascript %}
-{% include 'blog/gps.html' %}
+{% include 'blog/gps.js' %}
 
 {% if profile %}
 <link href="{% static 'css/plugins/switchery/switchery.css' %}" rel="stylesheet">
@@ -121,6 +139,50 @@ function populateInfoWindow(marker, infoWindow) {
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXY6uFicQrbFZ-ddMHg2eQrFT9BAVqLOo&callback=initMap">
 </script>
 
-{% include 'blog/script.html' %}
+{% include 'blog/script.js' %}
+<script>
+$(function(){
+    var loadForm = function(){
+        var btn = $(this);
+        $.ajax({
+            url : btn.attr('data-url'),
+            type : 'get',
+            dataType : 'json',
+            beforeSend: function(){
+                $('#modal-theme').modal('show');
+            },
+            success: function(data) {
+                $('#modal-theme .modal-content').html(data.html_form)
+            }
+        });
+    }
 
+    var saveForm = function(){
+        var form = $(this);
+        $.ajax({
+            url: form.attr("action"),
+            data : form.serialize(),
+            type : form.attr('method'),
+            dataType : 'json',
+            beforeSend: function(){
+                $('#modal-theme').modal('hide');
+            },
+            success : function(data) {
+                console.log("Success");
+            },
+            complete: function(data){
+                window.location.reload(true);
+                console.log("Complete");
+            },
+        });
+        return false;
+    }
+
+    $('.add-theme').click(loadForm);
+    $('#modal-theme').on("submit", ".add-theme-form", saveForm);
+    
+    $(".theme_list").on("click", ".update-theme", loadForm);
+    $("#modal-theme").on("submit", ".update-theme-form", saveForm);
+})
+</script>
 {% endblock javascript %}

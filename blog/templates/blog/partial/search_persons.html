@@ -1,13 +1,13 @@
 {% load static %}
 
 {% for person in person_list %}
-    <div class="child" id="{{person.id}}:{{person.nickname}}">
-        <div class="row">
+    <div class="plist">
+        <div class="row child" data-url="{{person.id}}:{{person.nickname}}">
             <div style="float:left;padding:10px;">
-                <img alt="image" width="70px" class="img-circle img-responsive" src="{% if person.picture %}{{ person.picture.url }}{% else %}{% static 'images/nouser.png' %}{% endif %}">
+                <img alt="image" width="70px" class="img-circle img-responsive" src="{% if person.picture %}{{ person.picture.url }}{% else %}{% static 'images/nouser.png' %}{% endif %}" >
             </div>
             <div style="float:left;padding:10px;">
-                <span>Nick Name : {{ person.nickname }}</span> <br/>
+                <span>Name : {{ person.nickname }}</span> <br/>
                 <span>Username : {{ person.user.username }}</span> <br>
                 <span>Email : {{ person.user.email }}</span> <br>
             </div>

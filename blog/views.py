@@ -212,17 +212,16 @@ def search_persons(request):
     search_query = request.GET.get('keyword')
     if search_query:
         person_list = Profile.objects.filter(nickname__contains = search_query)
-    html = render_to_string('blog/partial/search_persons.html', {
+    return render(request, 'blog/partial/search_persons.html', {
             'person_list': person_list,
         })
-    return JsonResponse(html, safe=False)
 
 
 def invite_persons(request, theme_id):
     theme = get_object_or_404(Theme, id=theme_id)
 
     if request.method == 'POST':
-        persons_id = request.POST.getlist('persons_id')
+        persons_id = request.cleaned_data.getlist('persons_id')
 
         if persons_id:
             for person_id in persons_id:

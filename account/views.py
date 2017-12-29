@@ -13,6 +13,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 
 # Create your views here.
+from .models import Relation
 from .forms import SignUpForm, ProfileForm, ChangePasswordForm
 from .tokens import account_activation_token
 from blog.models import Theme
@@ -25,12 +26,14 @@ def signup(request):
         if form.is_valid():
 
             user = form.save()
+            Relation.objects.create(from_user=user, to_user=user, status='F')
             # user.is_active = False
             # user.save()
             user = authenticate(
                     username=form.cleaned_data.get('email'),
                     password=form.cleaned_data.get('password')
                 )
+
             if user is not None and user.is_active:
                 auth.login(request, user)
             # current_site = get_current_site(request)

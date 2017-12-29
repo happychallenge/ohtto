@@ -1,5 +1,5 @@
 from django import forms
-
+from django.utils.translation import ugettext_lazy as _
 
 from .models import Post, Content, Theme
 
@@ -20,3 +20,11 @@ class PostForm(forms.ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         if self.instance:
             self.fields['theme'].queryset = Theme.objects.filter(author=user)
+
+
+class ThemeForm(forms.ModelForm):
+    status = forms.BooleanField(label=_("Public"), required=False,
+            initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch'}))
+    class Meta:
+        model = Theme
+        fields = ['name', 'status']

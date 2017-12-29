@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from . import views
+from . import views, view_tm
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -23,4 +23,6 @@ urlpatterns = [
 
     url(r'^myhistory/$', views.my_history, name='my_history'),
     url(r'^friend_profile/(?P<username>[\w@-_\.]+)/$', views.friend_profile, name='friend_profile'),
+
+    url(r'^theme_add/$', view_tm.theme_add, name='theme_add'),
 ]
