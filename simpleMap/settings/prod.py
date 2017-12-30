@@ -11,6 +11,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [ join(BASE_DIR, 'staticfiles'),]
 STATIC_ROOT = join(BASE_DIR, 'static')
 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = join(BASE_DIR, 'media')
+
 # INSTALLED_APPS += ['storages', ]  # senty 에러로깅을 위한 추가
 
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
