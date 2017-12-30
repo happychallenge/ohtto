@@ -140,6 +140,7 @@ class ProfileForm(forms.ModelForm):
         if not profile.picture:
             return profile 
 
+        print(self.cleaned_data)
         if self.cleaned_data.get('x') is None:
             return profile
             

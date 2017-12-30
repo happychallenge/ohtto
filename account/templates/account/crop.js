@@ -1,13 +1,9 @@
 <script>
 
-
-
 $(function(){
     // SCRIPT TO OPEN the MODAL With the Preview
 
-    $('#id_nickname').bind('input', function() { 
-        $("#btn-profile").show();
-    });
+    
 
     $('#id_picture').change(function() {
         if(this.files && this.files[0]) {
@@ -18,7 +14,7 @@ $(function(){
             }
             reader.readAsDataURL(this.files[0]);
         }
-        $("#btn-profile").show();
+        
     });
 
     // SCRIPTS TO HANDLE THE CROPPER BOX
@@ -57,7 +53,7 @@ $(function(){
         $('#id_y').val(cropData['y']);
         $('#id_height').val(cropData['height']);
         $('#id_width').val(cropData['width']);
-        // $("#formProfile").submit();
+        $("#formProfile").submit();
     });
 });
 
@@ -148,4 +144,7 @@ $("#modal-theme .modal-content .person_results").on('click', 'div.child', functi
     $("#person_results").hide();
 });
 
+$('#id_nickname').bind('input', function() { 
+    $("#btn-profile").show();
+});
 </script>
