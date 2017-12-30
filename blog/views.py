@@ -101,7 +101,7 @@ def current_location(request,tag=None):
 @login_required
 def my_bucket_list(request):
     post_list = request.user.profile.get_bucket_list
-    return render(request, 'blog/on_map.html', {'post_list':post_list})
+    return render(request, 'blog/index.html', {'post_list':post_list})
 
 
 @login_required

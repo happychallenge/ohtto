@@ -48,18 +48,18 @@
       </div>
     {% if tag %}
       <div id="floating-panel">
-        <input type=button value="food" class="maptag" data-url="#">
+        <input type=button value="{{tag}}" class="maptag" data-url="#">
       </div>
     {% else %}
       {% if pos %}
         <div id="floating-panel">
           <input type=button value="food" class="maptag" data-url="{% url 'blog:cur_tag_list' 'food' %}"> 
-          <input type=button value="tour" class="maptag" data-url="{% url 'blog:cur_tag_list' 'tour' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:cur_tag_list' 'travel' %}"> 
         </div>
       {% else %}
         <div id="floating-panel">
           <input type=button value="food" class="maptag" data-url="{% url 'blog:tag_list' 'food' %}"> 
-          <input type=button value="tour" class="maptag" data-url="{% url 'blog:tag_list' 'tour' %}"> 
+          <input type=button value="travel" class="maptag" data-url="{% url 'blog:tag_list' 'travel' %}"> 
         </div>
       {% endif %}
       
@@ -109,7 +109,7 @@ function populateInfoWindow(marker, infoWindow) {
         infoWindow.open(map, marker);
 
         infoWindow.addListener('closeclick',function() {
-            infoWindow.setMarker(null);
+            infoWindow.setMap(null);
         });
     }
 }
