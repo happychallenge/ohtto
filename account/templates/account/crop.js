@@ -51,7 +51,7 @@ $(function(){
     });
 
     // SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER
-    $('.js-crop-and-upload').click(function(){
+    $('.btn-crop').click(function(){
         var cropData = $image.cropper('getData');
         $('#id_x').val(cropData['x']);
         $('#id_y').val(cropData['y']);
@@ -102,7 +102,7 @@ var saveForm = function(){
     return false;
 }
 
-$('.add-theme').click(loadForm);
+$('.btn-add-theme').click(loadForm);
 $('#modal-theme').on("submit", ".add-theme-form", saveForm);
 
 // $(".theme_list").on("click", ".update-theme", loadForm);
@@ -125,9 +125,10 @@ $("#modal-theme").on("keyup", "#id_person", function(){
     return false;
 });
 
-$("#modal-theme .plist").on('click', 'div.child', function(){
-    var person_id = this.data-url.split(':')[0];
-    var person_name = this.data-url.split(':')[1];
+$("#modal-theme .modal-content .person_results").on('click', 'div.child', function(){
+    var person = $(this);
+    var person_id = person.attr("dataurl").split(':')[0];
+    var person_name = person.attr("dataurl").split(':')[1];
 
     $("#id_person").val("").focus();
     $('<input>').attr({

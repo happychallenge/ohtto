@@ -97,7 +97,7 @@
 
             </div>
             <div class="col-sm-6 pull-right">
-                <button class="btn btn-info add-theme pull-right" data-url="{% url 'blog:theme_add' %}">Append Theme</button>
+                <button class="btn btn-info btn-add-theme pull-right" data-url="{% url 'blog:theme_add' %}">Append Theme</button>
             </div>
         </div>
     {% for theme in user.profile.get_theme_list %}
