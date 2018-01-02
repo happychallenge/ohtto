@@ -79,7 +79,7 @@
                     {% if follower.user != request.user %}
                     <div class="col-sm-2 col-xs-3">
                         <span class="views-number">
-                        <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100%" alt="{{follower.nickname}}">
+                        <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
                         </span>
                         <div class="text-center">
                             <small>{{follower.nickname}}</small>

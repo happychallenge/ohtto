@@ -1,5 +1,7 @@
+from os.path import splitext
 from PIL import Image
 from django import forms
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
@@ -140,7 +142,7 @@ class ProfileForm(forms.ModelForm):
         if not profile.picture:
             return profile 
 
-        print(self.cleaned_data)
+        # print(self.cleaned_data)
         if self.cleaned_data.get('x') is None:
             return profile
             
@@ -150,8 +152,10 @@ class ProfileForm(forms.ModelForm):
         height = int(self.cleaned_data.get('height'))
 
         image = Image.open(profile.picture)
+
+        # new_filepath = settings.MEDIA_ROOT + profile.picture
         cropped_image = image.crop((x, y, width+x, height+y))
-        resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+        resized_image = cropped_image.resize((100, 100), Image.ANTIALIAS)
         resized_image.save(profile.picture.path)
 
         return profile

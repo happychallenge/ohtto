@@ -8,7 +8,7 @@ from .common import *
 INTERNAL_IPS = ["127.0.0.1"] # NOTE: djanog_debug_toolbar 용 설정 추가
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [ join(BASE_DIR, 'staticfiles'),]
+STATICFILES_DIRS = [ join(BASE_DIR, 'staticfiles'),]
 
 MEDIA_URL = '/media/'
 # MEDIA_ROOT = join(BASE_DIR,  'media')

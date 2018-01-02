@@ -3,8 +3,6 @@
 $(function(){
     // SCRIPT TO OPEN the MODAL With the Preview
 
-    
-
     $('#id_picture').change(function() {
         if(this.files && this.files[0]) {
             var reader = new FileReader();
