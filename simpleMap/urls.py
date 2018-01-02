@@ -35,35 +35,3 @@ urlpatterns = [
     url(r'^logout', signup_views.logout, name='logout'),
 ]
 
-if settings.DEBUG:
-    import debug_toolbar
-    from os.path import join
-    from .settings.common import BASE_DIR
-    urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
-    STATICFILES_DIRS = [
-        join(BASE_DIR, 'static'),
-    ]
-
-    from django.conf.urls.static import static
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    from os.path import join
-    from .settings.common import BASE_DIR
-    STATICFILES_DIRS = [
-        join(BASE_DIR, 'staticfiles'),
-    ]
-    STATIC_ROOT = join(BASE_DIR,  'static')
-    from django.views import static
-    static_list = [
-        (settings.STATIC_URL, STATIC_ROOT),
-        (settings.MEDIA_URL, settings.MEDIA_ROOT),
-    ]
-
-    for (prefix_url, root) in static_list:
-        if '://' not in prefix_url: # 외부 서버에서 서빙하는 것이 아니라면
-            prefix_url = prefix_url.lstrip('/')
-            url_pattern = r'^' + prefix_url + r'(?P<path>.+)'
-            pattern = url(url_pattern, static.serve, kwargs={'document_root': root})
-            urlpatterns.append(pattern)

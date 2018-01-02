@@ -24,15 +24,15 @@
 
 {% block main %}
 {% if Mine %}
-<div id="floating-panel">
-{% for theme in user.profile.get_theme_list %}
-  <input type=button value="{{theme.name}}" class="theme" data-url="{% url 'blog:user_theme_list' user.username theme.id %}"> 
-{% endfor %}
-</div> 
+  <div id="floating-panel">
+  {% for theme in user.profile.get_theme_list %}
+    <input type=button value="{{theme.name}}" class="theme" data-url="{% url 'blog:user_theme_list' user.username theme.id %}"> 
+  {% endfor %}
+  </div> 
 {% else %}
-<div id="floating-panel">
-  <input type=button value="{{theme}}" class="theme" data-url="#"> 
-</div> 
+  <div id="floating-panel">
+    <input type=button value="{{theme}}" class="theme" data-url="#"> 
+  </div> 
 {% endif %}
 
 

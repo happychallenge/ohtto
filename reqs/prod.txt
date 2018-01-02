@@ -1,4 +1,4 @@
 -r commons.txt
 gunicorn
 django-storages
-boto
+boto3
