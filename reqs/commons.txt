@@ -1,6 +1,7 @@
 django===1.11.7
 django-bootstrap3
 pillow
+pilkit
 clarifai
 python-dateutil
 dj-database-url

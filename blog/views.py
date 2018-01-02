@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponse
 from PIL import Image
+from pilkit.prcessors import Thumbnail
 from dateutil import parser
 from clarifai.rest import ClarifaiApp
 
@@ -172,10 +173,10 @@ def post_add(request):
                     content.taken_dt = dt
 
                 width, height = image.size
-                x = width * 0.5
-                y = height * 0.5
+                x = 720
+                y = (x * height) / width
                 image.thumbnail((x, y), Image.ANTIALIAS)
-                image.save(filename, quality=80)
+                image.save(filename, quality=85)
                 
                 content.file = filename
                 content.save()
