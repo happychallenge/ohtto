@@ -36,11 +36,7 @@ urlpatterns = [
 ]
 
 if settings.DEBUG == False:
-    STATICFILES_DIRS = [
-            join(settings.BASE_DIR, 'staticfiles'),
-        ]
-    STATIC_ROOT = join(settings.BASE_DIR,  'static')
-    
+
     from django.views import static
     static_list = [
         (settings.STATIC_URL, settings.STATIC_ROOT),

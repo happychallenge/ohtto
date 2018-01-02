@@ -7,8 +7,8 @@ import dj_database_url
 ################################
 # For HeroKu Deploy AWS S3 
 ################################
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
 # INSTALLED_APPS += ['storages', ]  # senty 에러로깅을 위한 추가
 
@@ -22,15 +22,15 @@ DATABASES['default'].update(db_from_env)
 ################################
 # For HeroKu Deploy Local 
 ################################
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [ join(BASE_DIR, 'staticfiles'),]
-# STATIC_ROOT = join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [ join(BASE_DIR, 'staticfiles'),]
+STATIC_ROOT = join(BASE_DIR, 'static')
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = join(BASE_DIR, 'media')
 
 
 
