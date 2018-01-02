@@ -20,6 +20,9 @@ from django.shortcuts import redirect
 
 from django.contrib.auth import views as login_views
 from account import views as signup_views
+from django.conf.urls import (
+        handler400, handler403, handler404, handler500
+)
 
 urlpatterns = [
     url('^$', lambda r: redirect('/blog/'), name='home'),
@@ -34,6 +37,9 @@ urlpatterns = [
         name='login'),
     url(r'^logout', signup_views.logout, name='logout'),
 ]
+
+handler404 = 'blog.https.handler404'
+handler500 = 'blog.https.handler500'
 
 if settings.DEBUG == False:
 
