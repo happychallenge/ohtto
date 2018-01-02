@@ -38,8 +38,8 @@ urlpatterns = [
     url(r'^logout', signup_views.logout, name='logout'),
 ]
 
-handler404 = 'blog.https.handler404'
-handler500 = 'blog.https.handler500'
+handler404 = 'simpleMap.https.handler404'
+handler500 = 'simpleMap.https.handler500'
 
 if settings.DEBUG == False:
 
