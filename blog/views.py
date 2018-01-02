@@ -181,19 +181,19 @@ def post_add(request):
                 content.save()
                 post.contents.add(content)
 
-                # response = model.predict_by_filename('.' + content.file.url)
-                # concepts = response['outputs'][0]['data']['concepts']
-                # tag_array = []
-                # for concept in concepts:
-                #     if concept['value'] > 0.95:
-                #         if concept['name'] not in forbidden:
-                #             obj, created = Tag.objects.get_or_create(tag=concept['name'])
-                #             tag_array.append(obj)
-                # content.tag_set.set(tag_array)
-                # tag_total.update(tag_array)
+                response = model.predict_by_filename('.' + content.file.url)
+                concepts = response['outputs'][0]['data']['concepts']
+                tag_array = []
+                for concept in concepts:
+                    if concept['value'] > 0.95:
+                        if concept['name'] not in forbidden:
+                            obj, created = Tag.objects.get_or_create(tag=concept['name'])
+                            tag_array.append(obj)
+                content.tag_set.set(tag_array)
+                tag_total.update(tag_array)
 
-            # tag_total = list(tag_total)
-            # post.tag_set.set(tag_total)
+            tag_total = list(tag_total)
+            post.tag_set.set(tag_total)
             post.lat = mgLat
             post.lng = mgLng
             post.save()
