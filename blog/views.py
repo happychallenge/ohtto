@@ -6,7 +6,6 @@ from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponse
 from PIL import Image
-from pilkit.prcessors import Thumbnail
 from dateutil import parser
 from clarifai.rest import ClarifaiApp
 
