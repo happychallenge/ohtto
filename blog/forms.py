@@ -12,7 +12,6 @@ class PostForm(forms.ModelForm):
                     'rows': 3,
             })
     )
-
     class Meta:
         model = Post
         fields = ['theme', 'pictures', 'text',  'is_public']

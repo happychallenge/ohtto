@@ -41,8 +41,15 @@ urlpatterns = [
 handler404 = 'simpleMap.https.handler404'
 handler500 = 'simpleMap.https.handler500'
 
-if settings.DEBUG == False:
+if settings.DEBUG == True:
+    # import debug_toolbar
+    # urlpatterns = [
+    #     url(r'^__debug__/', include(debug_toolbar.urls)),
+    # ] + urlpatterns
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+else:
     from django.views import static
     static_list = [
         (settings.STATIC_URL, settings.STATIC_ROOT),

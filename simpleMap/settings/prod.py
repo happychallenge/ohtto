@@ -33,7 +33,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = join(BASE_DIR, 'media')
 
 
-
 ################################
 # For HeroKu AWS S3
 ################################

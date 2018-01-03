@@ -143,6 +143,10 @@ def post_bucket(request):
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
+import sys
+from django.utils.six import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 @login_required
 def post_add(request):
     mgLat, mgLng = (0.0, 0.0)
@@ -160,6 +164,7 @@ def post_add(request):
                 content = Content()
             # Read Position from Picture
                 image = Image.open(filename)
+                print(filename)
                 lat, lng, dt = get_lat_lon_dt(image)
                 if lat != 0.0:
                     mgLat, mgLng = transform(lat, lng)
@@ -173,10 +178,21 @@ def post_add(request):
 
                 width, height = image.size
                 x = 720
-                y = (x * height) / width
-                image.thumbnail((x, y), Image.ANTIALIAS)
-                image.save(filename, quality=85)
+                y = int((x * height) / width)
+
+                output = BytesIO()
+                # save the resized file to our IO ouput with the correct format and EXIF data ;-)
                 
+                image = image.resize((x,y))
+                img.save(output, format='JPEG', quality=90)
+                output.seek(0)
+                filename = InMemoryUploadedFile(output,  
+                        'ImageField', "%s.jpg" % filename.name.split('.')[0], 
+                        'image/jpeg', sys.getsizeof(output), None)
+
+                # image.thumbnail((x, y), Image.ANTIALIAS)
+                # image.save(filename, quality=85)
+
                 content.file = filename
                 content.save()
                 post.contents.add(content)
