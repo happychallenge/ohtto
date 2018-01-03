@@ -180,21 +180,21 @@ def post_add(request):
                 x = 720
                 y = int((x * height) / width)
 
-                output = BytesIO()
                 # save the resized file to our IO ouput with the correct format and EXIF data ;-)
-                
+                output = BytesIO()
                 image = image.resize((x,y))
-                img.save(output, format='JPEG', quality=90)
+                image.save(output, format='JPEG', quality=90)
                 output.seek(0)
-                filename = InMemoryUploadedFile(output,  
+
+                content.file = InMemoryUploadedFile(output,  
                         'ImageField', "%s.jpg" % filename.name.split('.')[0], 
                         'image/jpeg', sys.getsizeof(output), None)
 
                 # image.thumbnail((x, y), Image.ANTIALIAS)
                 # image.save(filename, quality=85)
 
-                content.file = filename
                 content.save()
+                
                 post.contents.add(content)
 
                 response = model.predict_by_filename('.' + content.file.url)
