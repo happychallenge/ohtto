@@ -36,7 +36,7 @@ class PostEditForm(forms.ModelForm):
         fields = ['theme', 'pictures', 'text',  'is_public']
 
     def __init__(self, user, *args, **kwargs):
-        super(PostForm, self).__init__(*args, **kwargs)
+        super(PostEditForm, self).__init__(*args, **kwargs)
         if self.instance:
             self.fields['theme'].queryset = Theme.objects.filter(author=user)
 
