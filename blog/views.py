@@ -176,18 +176,23 @@ def post_add(request):
                     dt = parser.parse(dt)
                     content.taken_dt = dt
 
-                exif = dict(image._getexif().items())
+                try:
+                    exif = dict(image._getexif().items())
+                    print(exif)
 
-                if exif:
-                    if exif[274] == 3:
-                        image = image.rotate(180, expand=True)
-                        image.save(filename)
-                    elif exif[274] == 6:
-                        image = image.rotate(270, expand=True)
-                        image.save(filename)
-                    elif exif[274] == 8:
-                        image = image.rotate(90, expand=True)
-                        image.save(filename)
+                    if exif:
+                        if exif[274] == 3:
+                            image = image.rotate(180, expand=True)
+                            image.save(filename)
+                        elif exif[274] == 6:
+                            image = image.rotate(270, expand=True)
+                            image.save(filename)
+                        elif exif[274] == 8:
+                            image = image.rotate(90, expand=True)
+                            image.save(filename)
+                except:
+                    print("There is no EXIF INFO")
+                
 
                 width, height = image.size
                 x = 720
