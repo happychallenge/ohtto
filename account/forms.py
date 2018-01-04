@@ -154,16 +154,18 @@ class ProfileForm(forms.ModelForm):
         image = Image.open(profile.picture)
 
         exif = dict(image._getexif().items())
-
-        if exif[274] == 3:
-            image = image.rotate(180, expand=True)
-            image.save(profile.picture.path)
-        elif exif[274] == 6:
-            image = image.rotate(270, expand=True)
-            image.save(profile.picture.path)
-        elif exif[274] == 8:
-            image = image.rotate(90, expand=True)
-            image.save(profile.picture.path)
+        print(exif)
+        
+        if exif:
+            if exif[274] == 3:
+                image = image.rotate(180, expand=True)
+                image.save(profile.picture.path)
+            elif exif[274] == 6:
+                image = image.rotate(270, expand=True)
+                image.save(profile.picture.path)
+            elif exif[274] == 8:
+                image = image.rotate(90, expand=True)
+                image.save(profile.picture.path)
 
         # new_filepath = settings.MEDIA_ROOT + profile.picture
         cropped_image = image.crop((x, y, width+x, height+y))

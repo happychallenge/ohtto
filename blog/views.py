@@ -178,15 +178,16 @@ def post_add(request):
 
                 exif = dict(image._getexif().items())
 
-                if exif[274] == 3:
-                    image = image.rotate(180, expand=True)
-                    image.save(filename)
-                elif exif[274] == 6:
-                    image = image.rotate(270, expand=True)
-                    image.save(filename)
-                elif exif[274] == 8:
-                    image = image.rotate(90, expand=True)
-                    image.save(filename)
+                if exif:
+                    if exif[274] == 3:
+                        image = image.rotate(180, expand=True)
+                        image.save(filename)
+                    elif exif[274] == 6:
+                        image = image.rotate(270, expand=True)
+                        image.save(filename)
+                    elif exif[274] == 8:
+                        image = image.rotate(90, expand=True)
+                        image.save(filename)
 
                 width, height = image.size
                 x = 720
