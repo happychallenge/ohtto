@@ -6,14 +6,14 @@ from django.template.loader import render_to_string
 
 from account.models import Profile
 from .models import Theme, Invitee, Post, Tag
-from .forms import ThemeForm, PostForm
+from .forms import ThemeForm, PostEditForm
 
 @login_required
 def post_edit(request, id):
     post = Post.objects.prefetch_related('tag_set', 'contents').get(id=id) 
                 
     if request.method == 'POST':
-        form = PostForm(request.user, request.POST, request.FILES, instance=post)
+        form = PostEditForm(request.user, request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -32,7 +32,7 @@ def post_edit(request, id):
 
             return redirect('home')
     else:
-        form = PostForm(user=request.user, instance=post)
+        form = PostEditForm(user=request.user, instance=post)
         context = {'form': form, 'post': post}
         return render(request, 'blog/post_add.html', context)
 
