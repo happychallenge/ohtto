@@ -14,6 +14,7 @@ STATIC_ROOT = join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
   join(BASE_DIR, 'staticfiles/'),
 )
+print(STATIC_ROOT)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = join(BASE_DIR,  'media')
