@@ -26,6 +26,8 @@ function initMap() {
       center: {lat: 36.44, lng: 120.13}
   });
 
+  var infoWindow = new google.maps.InfoWindow({map: map});
+  
   bounds = new google.maps.LatLngBounds();
 
   if (navigator.geolocation){
