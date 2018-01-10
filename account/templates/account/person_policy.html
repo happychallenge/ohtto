@@ -154,7 +154,7 @@
                     <div class="forum-icon">
                         <i class="fa fa-shield"></i>
                     </div>
-                    <a href="{% url 'blog:user_theme_list' theme.author.username theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
+                    <a href="{% url 'blog:user_theme_list' theme.author.username theme.id %}" class="forum-item-title"> ({{theme.author.first_name}}的) {{theme.name}} </a> 
                 </div>
                 <div class="col-sm-2 forum-info">
                     <span class="views-number">
