@@ -18,9 +18,7 @@ def post_edit(request, id):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            print(form)
             tags = request.POST.get('tags')
-            print("Tags : ", tags)
             tag_array = []
             if tags:
                 tag_list = tags.split(',')
