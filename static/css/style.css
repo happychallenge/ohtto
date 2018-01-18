@@ -3905,7 +3905,7 @@ code {
 }
 .ibox {
   clear: both;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-top: 0;
   padding: 0 0 0 5px;
 }
@@ -3936,13 +3936,13 @@ code {
   /* 2px 0 0; */
   color: inherit;
   margin-bottom: 0;
-  padding: 15px 15px 7px;
-  min-height: 48px;
+  padding: 5px 10px 5px 10px;
+  /*min-height: 40px;*/
 }
 .ibox-content {
   background-color: #ffffff;
   color: inherit;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 5px 5px 5px;
   border-color: #e7eaec;
   border-image: none;
   border-style: solid solid none;
