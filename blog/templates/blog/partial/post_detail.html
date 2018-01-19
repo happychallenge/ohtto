@@ -4,7 +4,7 @@
     <div class="ibox-title">
         
         <a href="{% if user == post.author %}{% url 'user_profile' %}{% else %}{% url 'blog:friend_profile' post.author.username %}{% endif %}">
-            <img alt="image" width="30px" class="img-circle" src="{% if post.author.profile.picture.url %} {{ post.author.profile.picture.url }} {% else %} {% static 'image/nouser.png' %}{% endif %}">
+            <img alt="image" width="30px" class="img-circle" src="{% if post.author.profile.picture %} {{ post.author.profile.picture.url }} {% else %} {% static 'image/nouser.png' %}{% endif %}">
             <strong> {{ post.author.first_name }}</strong>
         </a>
     </div>
