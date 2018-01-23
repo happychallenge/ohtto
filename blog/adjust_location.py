@@ -74,10 +74,10 @@ if __name__ == "__main__":
     fullpath = '/Users/happy/Django/ohtto/blog/aa.jpg'
     image = Image.open(fullpath)
     lat, lng, dt = get_lat_lon_dt(image)
-    print("Lat : ", lat, " Lng : ", lng, " Taken Time : ", dt)
+    # print("Lat : ", lat, " Lng : ", lng, " Taken Time : ", dt)
 
     if lat != 0.0:
         mgLat, mgLng = transform(lat, lng)
-        print("Lat : ", mgLat, " Lng : ", mgLng, " Taken Time : ", dt)
-        print("")
+        # print("Lat : ", mgLat, " Lng : ", mgLng, " Taken Time : ", dt)
+        # print("")
 

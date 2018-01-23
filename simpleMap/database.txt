@@ -1,0 +1,23 @@
+## ROOT
+
+sudo -u postgres psql
+
+CREATE DATABASE ohtto_db;
+CREATE USER ohtto WITH PASSWORD 'qwer1234!!';
+
+ALTER ROLE ohtto SET client_encoding TO 'utf8';
+ALTER ROLE ohtto SET default_transaction_isolation TO 'read committed';
+ALTER ROLE ohtto SET timezone TO 'UTC';
+
+GRANT ALL PRIVILEGES ON DATABASE ohtto_db TO ohtto;
+
+
+## make user and add Group www-data
+sudo useradd -G www-data ohtto
+
+## Git
+git remote add origin .. git
+
+## sudo su - ohtto
+gunicorn --bind 0.0.0.0:8000 myproject.wsgi
+

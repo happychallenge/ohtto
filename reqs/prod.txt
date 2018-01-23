@@ -2,3 +2,5 @@
 gunicorn
 django-storages
 boto3
+raven
+

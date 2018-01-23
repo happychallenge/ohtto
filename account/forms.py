@@ -155,7 +155,7 @@ class ProfileForm(forms.ModelForm):
 
         try:
             exif = dict(image._getexif().items())
-            print(exif)
+            # print(exif)
 
             if exif:
                 if exif[274] == 3:

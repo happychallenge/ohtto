@@ -1,0 +1,41 @@
+<div class="forum-title">
+    <h3>General subjects</h3>
+</div>
+
+<div class="forum-item">
+    <div class="row">
+        <div class="col-sm-8 col-xs-8">
+            <div class="forum-icon">
+                <i class="fa fa-shield"></i> 
+            </div>
+            <a href="{% url 'blog:my_history' %}" class="forum-item-title">Post History</a>
+        </div>
+        <div class="col-sm-4 col-xs-4  forum-info">
+            <span class="views-number">
+                {{user.profile.post_count}}
+            </span>
+            <div>
+                <small>Posts</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="forum-item">
+    <div class="row">
+        <div class="col-sm-8 col-xs-8">
+            <div class="forum-icon">
+                <i class="fa fa-shield"></i>
+            </div>
+            <a href="{% url 'blog:my_bucket_list' %}" class="forum-item-title">Bucket List</a>
+        </div>
+        <div class="col-sm-4 col-xs-4 forum-info">
+            <span class="views-number">
+                {{user.profile.bucket_count}}
+            </span>
+            <div>
+                <small>Bucket</small>
+            </div>
+        </div>
+    </div>
+</div>

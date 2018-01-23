@@ -1,0 +1,89 @@
+    <div class="row">
+        <div class="col-sm-6 forum-title">
+            <h3>Theme</h3>
+        </div>
+        <div class="col-sm-6 pull-right">
+        {% if not profile %}
+            <button class="btn btn-info btn-add-theme pull-right" data-url="{% url 'blog:theme_add' %}">Append Theme</button>
+        {% endif %}
+        </div>
+    </div>
+{% for theme in user.profile.get_theme_list %}
+    <div class="forum-item theme_list">
+        <div class="row">
+
+            <div class="col-sm-{% if profile %}10{% else %}4{% endif %}">
+                <div class="forum-icon">
+                    <i class="fa fa-shield"></i>
+                </div>
+                <a href="{% url 'blog:user_theme_list' user.username theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
+            </div>
+
+        {% if not profile %}
+            <div class="col-sm-1 forum-info">
+                <span class="views-number">
+                    <input type="checkbox" class="js-switch1-{{forloop.counter}}" 
+                        {% if theme.public %}checked{% endif %}>
+                </span>
+                <div>
+                    <small>Public</small>
+                </div>
+            </div>
+            
+            <div class="col-sm-2 forum-info">
+                <button class="btn btn-primary invite-person" 
+                    data-url="{% url 'blog:invite_persons' theme.id %}">Invite</button>
+            </div>
+            <div class="col-sm-3 forum-info">
+                <div class="text-left">
+                {% for invitee in theme.get_invitee_all %}
+                    <small>{{invitee.username}}</small>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+            <div class="col-sm-2 forum-info">
+                <span class="views-number">
+                    {{theme.post_count}}
+                </span>
+                <div>
+                    <small>Posts</small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    
+    <div class="forum-title">
+        <h3>Invited</h3>
+    </div>
+{% for theme in user.profile.get_invited_theme %}
+    <div class="forum-item">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="forum-icon">
+                    <i class="fa fa-shield"></i>
+                </div>
+                <a href="{% url 'blog:user_theme_list' theme.author.username theme.id %}" class="forum-item-title"> ({{theme.author.first_name}}的) {{theme.name}} </a> 
+            </div>
+            <div class="col-sm-2 forum-info">
+                <span class="views-number">
+                    <input type="checkbox" class="js-switch2-{{forloop.counter}}" {% if theme.public %}checked{% endif %}>
+                </span>
+                <div>
+                    <small>is Public</small>
+                </div>
+            </div>
+            <div class="col-sm-2 forum-info">
+                <span class="views-number">
+                    {{theme.post_count}}
+                </span>
+                <div>
+                    <small>Posts</small>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endfor %}

@@ -3,178 +3,19 @@
 <div class="ibox float-e-margins">
     {# FORM TITLE #}
     <div class="ibox-title">
-        <h3> 
-            {{user.profile.nickname}}'s Person Infomation <small> Info and Policy.</small></h3>
+        <h2> 
+            {{user.profile.nickname}}'s Person Infomation <small> Info and Policy.</small>
+        </h2>
     </div>
     {# FORM CONTENT #}
     <div class="ibox-content forum-container">
     {# Post #}
-        <div class="forum-title">
-            <h3>General subjects</h3>
-        </div>
-   
-        <div class="forum-item">
-            <div class="row">
-                <div class="col-sm-8 col-xs-8">
-                    <div class="forum-icon">
-                        <i class="fa fa-shield"></i> 
-                    </div>
-                    <a href="{% url 'blog:my_history' %}" class="forum-item-title">Post History</a>
-                </div>
-                <div class="col-sm-4 col-xs-4  forum-info">
-                    <span class="views-number">
-                        {{user.profile.post_count}}
-                    </span>
-                    <div>
-                        <small>Posts</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="forum-item">
-            <div class="row">
-                <div class="col-sm-8 col-xs-8">
-                    <div class="forum-icon">
-                        <i class="fa fa-shield"></i>
-                    </div>
-                    <a href="{% url 'blog:my_bucket_list' %}" class="forum-item-title">Bucket List</a>
-                </div>
-                <div class="col-sm-4 col-xs-4 forum-info">
-                    <span class="views-number">
-                        {{user.profile.bucket_count}}
-                    </span>
-                    <div>
-                        <small>Bucket</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        {% include 'account/partial_posting_history.html' %}
         
     {# Friends #}
-        <div class="forum-title">
-            <h3>Friends</h3>
-        </div>
-   
-        <div class="forum-item">
-            <div class="row">
-                <div class="col-sm-8">
-                    <div class="forum-icon">
-                        <i class="fa fa-shield"></i> 
-                    </div>
-                    <a href="" class="forum-item-title">Friends</a>
-                </div>
-                <div class="col-sm-4 forum-info">
-                    <span class="views-number">
-                        {{user.profile.following_count}}
-                    </span>
-                    <div>
-                        <small>people</small>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                {% for follower in user.profile.get_following %}
-                    {% if follower.user != request.user %}
-                    <div class="col-sm-2 col-xs-3">
-                        <span class="views-number">
-                        <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
-                        </span>
-                        <div class="text-center">
-                            <small>{{follower.nickname}}</small>
-                        </div>
-                    </div>     
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
+        {% include 'account/partial_friends.html' %}
 
     <!-- My Theme -->
-        <div class="row">
-            <div class="col-sm-6 forum-title">
-                <h3>Theme</h3>
-
-            </div>
-            <div class="col-sm-6 pull-right">
-                <button class="btn btn-info btn-add-theme pull-right" data-url="{% url 'blog:theme_add' %}">Append Theme</button>
-            </div>
-        </div>
-    {% for theme in user.profile.get_theme_list %}
-        <div class="forum-item theme_list">
-            <div class="row">
-                <div class="col-sm-{% if profile %}10{% else %}4{% endif %}">
-                    <div class="forum-icon">
-                        <i class="fa fa-shield"></i>
-                    </div>
-                    <a href="{% url 'blog:user_theme_list' user.username theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
-                </div>
-
-            {% if not profile %}
-                <div class="col-sm-1 forum-info">
-                    <span class="views-number">
-                        <input type="checkbox" class="js-switch1-{{forloop.counter}}" {% if theme.public %}checked{% endif %}>
-                    </span>
-                    <div>
-                        <small>Public</small>
-                    </div>
-                </div>
-                
-                <div class="col-sm-2 forum-info">
-                    <button class="btn btn-primary invite-person" data-url="{% url 'blog:invite_persons' theme.id %}">Invite</button>
-                </div>
-                <div class="col-sm-3 forum-info">
-                    <div class="text-left">
-                    {% for invitee in theme.get_invitee_all %}
-                        <small>{{invitee.username}}</small>
-                    {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-
-                <div class="col-sm-2 forum-info">
-                    <span class="views-number">
-                        {{theme.post_count}}
-                    </span>
-                    <div>
-                        <small>Posts</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-        
-        <div class="forum-title">
-            <h3>Invited</h3>
-        </div>
-    {% for theme in user.profile.get_invited_theme %}
-        <div class="forum-item">
-            <div class="row">
-                <div class="col-sm-8">
-                    <div class="forum-icon">
-                        <i class="fa fa-shield"></i>
-                    </div>
-                    <a href="{% url 'blog:user_theme_list' theme.author.username theme.id %}" class="forum-item-title"> ({{theme.author.first_name}}的) {{theme.name}} </a> 
-                </div>
-                <div class="col-sm-2 forum-info">
-                    <span class="views-number">
-                        <input type="checkbox" class="js-switch2-{{forloop.counter}}" {% if theme.public %}checked{% endif %}>
-                    </span>
-                    <div>
-                        <small>is Public</small>
-                    </div>
-                </div>
-                <div class="col-sm-2 forum-info">
-                    <span class="views-number">
-                        {{theme.post_count}}
-                    </span>
-                    <div>
-                        <small>Posts</small>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    {% endfor %}
+        {% include 'account/partial_theme_list.html' %}
     </div>
 </div>
