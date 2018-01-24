@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^comment/', include('comment.urls', namespace='comment')),
     url(r'^account/', include('account.urls')),
     url(r'^activity/', include('activity.urls', namespace='activity')),
+    url(r'^friend/', include('friend.urls', namespace='friend')),
 
     url(r'^signup/$', signup_views.signup, name='signup'),
     url(r'^login', login_views.login, {'template_name': 'account/login.html'},

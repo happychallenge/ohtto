@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+
+{% endblock css %}
+
+
+{% block main %}
+<div class="row">
+{# Friend Recommend #}
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h2> 
+                    Recommend Friends List
+                </h2>
+            </div>
+            <div class="ibox-content">
+                {% for follower in recommend_list %}
+                        <div class="row">
+                        {% if follower.user != request.user %}
+                            <div class="col-sm-offset-1 col-sm-3">
+                                <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
+                            </div>
+                            <div class="col-sm-5 text-center">
+                                <strong>{{follower.nickname}}</strong> <br>
+                                <small># of Friends : {{follower.follower_count}} </small>
+
+                            </div>
+                            <div class="col-sm-3 text-center">
+                                <button class="btn btn-info btn-friend-ask" data-url="{{follower.id}}">친구신청</button>
+                            </div>
+                        {% endif %}
+                        </div>
+                {% endfor %}
+            </div>     
+        
+        </div>
+    </div>
+    
+{# Friend List #}
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h2> 
+                    {{user.profile.nickname}}'s Friends List
+                </h2>
+            </div>
+            <div class="ibox-content">
+                {% for follower in friend_list %}
+                <div class="col-sm-6">
+                        <div class="row">
+                        {% if follower.user != request.user %}
+                            <div class="col-sm-offset-1 col-sm-3">
+                                <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
+                            </div>
+                            <div class="col-sm-5 text-center">
+                                <strong>{{follower.nickname}}</strong> <br>
+                                <small># of Friends : {{follower.follower_count}} </small>
+
+                            </div>
+                            <div class="col-sm-3 text-center">
+                                <button class="btn btn-info">친구</button>
+                            </div>
+                        {% endif %}
+                        </div>
+                </div>
+                {% endfor %}
+            </div>     
+        
+        </div>
+    </div>
+</div>
+{% endblock main %}
