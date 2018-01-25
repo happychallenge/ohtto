@@ -33,7 +33,7 @@ class Profile(models.Model):
 
     @property
     def follower_count(self):
-        return len(self.get_follower)
+        return len(self.get_follower) - 1
 
     @property
     def following_count(self):

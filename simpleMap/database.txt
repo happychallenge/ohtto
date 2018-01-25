@@ -21,3 +21,45 @@ git remote add origin .. git
 ## sudo su - ohtto
 gunicorn --bind 0.0.0.0:8000 myproject.wsgi
 
+
+sudo systemctl restart gunicorn
+
+sudo systemctl restart nginx
+
+## nginx file size : /etc/nginx/nginx.conf
+client_max_body_size 8m;
+
+## /etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ohtto
+Group=www-data
+WorkingDirectory=/home/ohtto/Project
+ExecStart=/home/ohtto/ohttoenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 simpleMap.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+## nginx sites-available/ohtto
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    location /static/ {
+        root /home/ohtto/Project;
+    }
+
+    location /media/ {
+        root /home/ohtto/Project;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+
