@@ -8,16 +8,16 @@
     {% for follower in recommend_list %}
         <div class="row">
             {% if follower.user != request.user %}
-                <div class="col-sm-offset-1 col-sm-3">
+                <div class="col-xs-offset-1 col-xs-3">
                     <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
                     style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
                 </div>
-                <div class="col-sm-5 text-center">
+                <div class="col-xs-5 text-center">
                     <strong>{{follower.nickname}}</strong> <br>
                     <small># of Friends : {{follower.follower_count}} </small>
 
                 </div>
-                <div class="col-sm-3 text-center">
+                <div class="col-xs-3 text-center">
                     <button class="btn btn-info btn-ask-friend" data-url="{{follower.id}}">Ask Friend</button>
                 </div>
             {% endif %}

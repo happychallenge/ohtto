@@ -6,13 +6,13 @@
 
 <div class="forum-item">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-xs-6 col-sm-8">
             <div class="forum-icon">
                 <i class="fa fa-shield"></i> 
             </div>
             <a href="" class="forum-item-title">Friends</a>
         </div>
-        <div class="col-sm-4 forum-info">
+        <div class="col-xs-6 col-sm-4 forum-info">
             <span class="views-number">
                 {{user.profile.following_count}}
             </span>
@@ -24,9 +24,9 @@
     <div class="row">
         {% for follower in user.profile.get_following %}
             {% if follower.user != request.user %}
-            <div class="col-sm-2 col-xs-3">
+            <div class="col-sm-2 col-xs-4">
                 <span class="views-number">
-                <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
+                    <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
                 </span>
                 <div class="text-center">
                     <small>{{follower.nickname}}</small>
