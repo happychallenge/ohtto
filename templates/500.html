@@ -13,4 +13,21 @@
     </div>
 
 {% endblock main %}
+
+{% block javascript %}
+
+<script src="https://cdn.ravenjs.com/2.3.0/raven.min.js"></script>
+
+{% if request.sentry.id %}
+  <script>
+  Raven.showReportDialog({
+    eventId: '{{ request.sentry.id }}',
+
+    // use the public DSN (dont include your secret!)
+    dsn: 'https://<key>@sentry.io/<project>'
+  });
+  </script>
+{% endif %}
+    
+{% endblock javascript %}
  
