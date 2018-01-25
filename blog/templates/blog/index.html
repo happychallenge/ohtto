@@ -35,9 +35,23 @@
             {% if profile %}
               {% include 'account/person_policy.html' with pList=True user=friend %}
             {% endif %}
-            {% for post in post_list %}
-              {% include 'blog/partial/post_detail.html' with pList=True %}
-            {% endfor %}
+
+            {% if post_list %}
+                {% for post in post_list %}
+                  {% include 'blog/partial/post_detail.html' with pList=True %}
+                {% endfor %}
+            {% else %}
+                <div class="ibox float-e-margins" post-id="{{post.id}}">
+                    <div class="ibox-title">
+                        <h3>No Content</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="text-center">
+                          <p>You don't have a friend or bucket List</p>
+                        </div>
+                    </div>
+            {% endif %}
+            
           </div>
       </div>
       

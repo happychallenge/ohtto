@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+
+{% endblock css %}
+
+
+{% block main %}
+<div class="row">
+{# Friend Recommend #}
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            {% include 'friend/partial_nonfriend_list.html' %}
+        
+        </div>
+    </div>
+    
+    <div class="col-sm-6">
+
+        {# Ask Friend List #}
+        {% include 'friend/partial_received_asking_list.html' %}
+        
+        {# Friend List #}
+        {% include 'friend/partial_friend_list.html' %}
+    </div>
+</div>
+{% endblock main %}
+
+{% block javascript %}
+<script>
+$(document).on('click', '.btn-ask-friend', function(){
+  var friend = $(this)
+  var pk = friend.attr('data-url');
+  console.log('PK : ' + pk);
+
+  $.ajax({
+    type: 'POST',
+    url: "{% url 'friend:ask_friend' %}",
+    data: {'pk': pk, 'csrfmiddlewaretoken': '{{csrf_token}}' },
+    dataType: 'json',
+
+    // response expression from Server 
+    // { 'message': message }
+    success: function(response){
+      console.log(response);
+      alert(response.message);
+      friend.hide();
+    },
+
+    error: function(request, status, error) {
+        console.log(error);
+        // alert("Have to login");
+        // window.location.replace("/accounts/login/");
+    },
+  });
+});
+
+$(document).on('click', '.btn-accept-friend', function(){
+  var pk = $(this).attr('data-url');
+  var friend = $(this).closest(".friend");
+  var friend_list = $("#friend_list");
+
+  console.log('Friend_list : ' + friend_list);
+
+  $.ajax({
+    type: 'POST',
+    url: "{% url 'friend:accept_friend' %}",
+    data: {'pk': pk, 'csrfmiddlewaretoken': '{{csrf_token}}' },
+    dataType: 'html',
+
+    // response expression from Server 
+    // { 'html': html }
+    success: function(response){
+      console.log(response);
+      friend.hide();
+      $("#friend_list").html(response);
+    },
+
+    error: function(request, status, error) {
+        console.log(error);
+        // alert("Have to login");
+        // window.location.replace("/accounts/login/");
+    },
+  });
+});
+
+</script>
+
+{% endblock javascript %}

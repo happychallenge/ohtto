@@ -1,0 +1,13 @@
+{% load static %}
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h2> 
+            {{user.profile.nickname}}'s Friends List <small> # {{user.profile.follower_count}} </small>
+         </h2>
+    </div>
+    <div class="ibox-content" id="friend_list">
+        {% include 'friend/ajax_friend_list.html' %}
+    </div>     
+
+</div>

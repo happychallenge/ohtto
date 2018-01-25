@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="ibox-title">
+    <h2> 
+        Received asking friendship List
+    </h2>
+</div>
+<div class="ibox-content">
+    {% for follower in received_list %}
+        <div class="row friend">
+            {% if follower.user != request.user %}
+                <div class="col-sm-offset-1 col-sm-3">
+                    <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
+                    style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <strong>{{follower.nickname}}</strong> <br>
+                    <small># of Friends : {{follower.follower_count}} </small>
+
+                </div>
+                <div class="col-sm-3 text-center">
+                    <button class="btn btn-info btn-accept-friend" data-url="{{follower.id}}">Accept Friend</button>
+                    <hr>
+                    <button class="btn btn-warning btn-reject-friend" data-url="{{follower.id}}">Reject Friend</button>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>    
+<hr>

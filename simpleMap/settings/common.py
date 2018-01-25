@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'simpleMap.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://postgres:@localhost:5432/testdb')
+    'default': dj_database_url.parse('postgres://ohtto:Wjdgml00@localhost:5432/ohttodb')
 }
 # DATABASES['default'] = 
 
