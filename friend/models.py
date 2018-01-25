@@ -9,7 +9,7 @@ class FriendshipRequest(models.Model):
     to_user = models.ForeignKey(Profile, related_name='friendship_requests_received')
 
     rejected = models.BooleanField(default=False)
-    viewed = models.DateTimeField(blank=True, null=True)
+    rejected_dt = models.DateTimeField(auto_now=True)
     create_dt = models.DateTimeField(auto_now_add=True)
 
     class Meta:

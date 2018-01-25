@@ -1,0 +1,13 @@
+{% load static %}
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h2> 
+            {{user.profile.nickname}}'s Rejected Friendship List <small> 
+         </h2>
+    </div>
+    <div class="ibox-content" id="rejected_list">
+        {% include 'friend/ajax_rejected_list.html' %}
+    </div>     
+
+</div>

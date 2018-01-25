@@ -1,0 +1,22 @@
+{% load static %}
+
+{% for follower in rejected_list %}
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-3">
+        <img src="{% if follower.picture %} {{ follower.picture.url }} {% else %} {% static 'images/nouser.png' %}{% endif %}" 
+        style="border-radius: 5px; margin-bottom: 1em;" width="100px" alt="{{follower.nickname}}">
+    </div>
+    <div class="col-sm-5 text-center">
+        <strong>{{follower.nickname}}</strong> <br>
+        <small># of Friends : {{follower.follower_count}} </small>
+
+    </div>
+    <div class="col-sm-3 text-center">
+        <div id="btn-{{follower.id}}">
+            <button class="btn btn-info btn-accept-friend" id="btn" data-url="{{follower.id}}">Accept Friend</button>
+            <hr>
+            <stong>Rejected Time </stong> : 
+        </div>
+    </div>
+</div>
+{% endfor %}

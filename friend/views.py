@@ -28,8 +28,11 @@ def friend_list(request, tag=None):
             to_user=request.user.profile, rejected=False).all()
     received_list = [u.from_user for u in qs]
 
+    qs = FriendshipRequest.objects.filter(to_user=request.user.profile, rejected=True) 
+    rejected_list = [u.from_user for u in qs]
+
     context = {'friend_list': friend_list, 'recommend_list': recommend_list, 
-                'received_list': received_list}
+                'received_list': received_list, 'rejected_list': rejected_list}
     return render(request, 'friend/friend.html', context)
 
 
@@ -80,4 +83,20 @@ def accept_friend(request):
 
     friend_list = request.user.profile.get_following
     return render(request, "friend/ajax_friend_list.html", { 'friend_list': friend_list})
+
+@login_required
+def reject_friend(request):
+    to_user = request.user.profile
+    id = request.POST.get('pk')
+    if id:
+        from_user = Profile.objects.get(id=id)
+
+    fsr = FriendshipRequest.objects.get(from_user=from_user, to_user=to_user)
+    fsr.rejected = True
+    fsr.save()
+
+    qs = FriendshipRequest.objects.filter(to_user=to_user, rejected=True) 
+    rejected_list = [u.from_user for u in qs]
+    print(rejected_list)
+    return render(request, "friend/ajax_rejected_list.html", { 'rejected_list': rejected_list})
 
