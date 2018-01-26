@@ -44,7 +44,6 @@ class Theme(models.Model):
         return self.posts.all()
 
     def get_invitee_all(self):
-        print(self.invite_user_set.all())
         return self.invite_user_set.all()
 
 class Invitee(models.Model):

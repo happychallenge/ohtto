@@ -234,7 +234,6 @@ def post_add(request):
 
     else:
         form = PostForm(user=request.user)
-        print("POstForm :",form)
         return render(request, 'blog/post_add.html', {'form': form})
 
 
@@ -242,6 +241,7 @@ def post_add(request):
 # Invite Person
 ############################
 def search_persons(request):
+    person_list = []
     search_query = request.GET.get('keyword')
     if search_query:
         person_list = Profile.objects.filter(nickname__contains = search_query)
@@ -255,7 +255,6 @@ def invite_persons(request, theme_id):
 
     if request.method == 'POST':
         persons_id = request.POST.getlist('persons_id')
-        print(persons_id)
 
         if persons_id:
             for person_id in persons_id:

@@ -5,7 +5,10 @@ from .models import Post, Content, Theme
 
 class PostForm(forms.ModelForm):
     pictures = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    is_public = forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch'}))
+    is_public = forms.BooleanField(initial=True, label='해당 Posting을 공개하시겠습니까?',
+            widget=forms.CheckboxInput(attrs={'class': 'js-switch1'}))
+    is_location = forms.BooleanField(initial=True, label='해당 Posting의 위치를 공개하시겠습니까?',
+            widget=forms.CheckboxInput(attrs={'class': 'js-switch2'}))
     text = forms.CharField(label='Short Message', required=False,
             widget=forms.Textarea(attrs={
                     'class': 'post-new-content',
@@ -14,7 +17,7 @@ class PostForm(forms.ModelForm):
     )
     class Meta:
         model = Post
-        fields = ['theme', 'pictures', 'text',  'is_public']
+        fields = ['theme', 'pictures', 'text',  'is_public', 'is_location']
 
     def __init__(self, user, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
