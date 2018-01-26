@@ -2,7 +2,7 @@
 
 {% for person in person_list %}
     <div class="plist">
-        <div class="row child" dataurl="{{person.id}}:{{person.nickname}}">
+        <div class="row child" data-url="{{person.id}}:{{person.nickname}}">
             <div style="float:left;padding:10px;">
                 <img alt="image" width="70px" class="img-circle img-responsive" src="{% if person.picture %}{{ person.picture.url }}{% else %}{% static 'images/nouser.png' %}{% endif %}" >
             </div>

@@ -59,7 +59,7 @@ $(function(){
 var loadForm = function(){
     var btn = $(this);
     $.ajax({
-        url : btn.attr('data-url'),
+        url : btn.attr('data-url'), // data-url : /blog/theme_add/
         type : 'get',
         dataType : 'json',
         beforeSend: function(){
@@ -111,17 +111,18 @@ $("#modal-theme").on("keyup", "#id_person", function(){
             'keyword': search,
         },
         success: function(data){
-            $("#modal-theme .person_results").show();
-            $("#modal-theme .person_results").html(data);
+            $("#person_results").show();
+            $("#person_results").html(data);
         }
     });
     return false;
 });
 
-$("#modal-theme .modal-content .person_results").on('click', 'div.child', function(){
+$("#modal-theme").on('click', '#person_results div.child', function(){
     var person = $(this);
-    var person_id = person.attr("dataurl").split(':')[0];
-    var person_name = person.attr("dataurl").split(':')[1];
+    var dataurl = person.attr("data-url");
+    var person_id = dataurl.split(':')[0];
+    var person_name = dataurl.split(':')[1];
 
     $("#id_person").val("").focus();
     $('<input>').attr({

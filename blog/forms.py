@@ -42,7 +42,7 @@ class PostEditForm(forms.ModelForm):
 
 class ThemeForm(forms.ModelForm):
     public = forms.BooleanField(label=_("Public"), required=False,
-            initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch'}))
+            initial=True, widget=forms.CheckboxInput(attrs={'class': 'js-switch3'}))
     class Meta:
         model = Theme
         fields = ['name', 'public']

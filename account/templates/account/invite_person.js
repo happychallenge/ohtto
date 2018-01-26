@@ -3,8 +3,9 @@
 // 뉴스에 관련된 사람 추가 하기 
 //********************************************
 // Modal Window 뜨위기
-$(".invite-person").click(function(){
-    var action = $(this).attr('data-url');
+$(document).on('click', '.invite-person', function(){
+
+    var action = $(this).attr('data-url'); // data-url : /blog/invite_persons/6/
     $("#modal-inviteperson").modal("show");
     $("#form_inviteperson").attr("action", action);
 });
@@ -12,24 +13,26 @@ $(".invite-person").click(function(){
 // PERSON
 $("#id_person").keyup(function(){
     var search = $(this).val();
-
     $.ajax({
         url: "{% url 'blog:search_persons' %}", 
         data: {
             'keyword': search,
         },
-        dataType: 'json',
+        dataType: 'html',
         success: function(data){
-            $("#person_results").show();
-            $("#person_results").html(data);
+            console.log(data);
+            $("#id_person_results").show();
+            $("#id_person_results").html(data);
         }
     });
     return false;
 });
 
-$("#person_results").on('click', 'div.child', function(){
-    var person_id = this.id.split(':')[0];
-    var person_name = this.id.split(':')[1];
+$("#id_person_results").on('click', 'div.child', function(){
+    var person = $(this);
+    var dataurl = person.attr("data-url");
+    var person_id = dataurl.split(':')[0];
+    var person_name = dataurl.split(':')[1];
 
     $("#id_person").val("").focus();
     $('<input>').attr({

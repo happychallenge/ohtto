@@ -49,7 +49,7 @@
 
 {% block modal %}
 <!-- MODAL TO CROP THE IMAGE -->
-{% include 'account/picturecrop.html' %}
+{% include 'account/modal_picturecrop.html' %}
 
 <!-- MODAL FOR THEME ADD & EDIT -->
 <div class="modal fade" id="modal-theme">
@@ -59,24 +59,68 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL FOR THEME ADD & EDIT -->
+<div class="modal fade" id="modal-inviteperson">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"> {% trans "Invite Person to This Theme" %}</h4>
+            </div>
+        <form method="post" id="form_inviteperson">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-8 search">
+                    <input type="text" class="form-control" id="id_person">
+                    <div class="results" id="id_person_results">
+                      
+                    </div>
+                  </div>
+                  <div class="col-sm-4 made-input">
+                    <div class="col-sm-6" id="persons_name">
+                        
+                    </div>
+                    <div class="col-sm-2" id="persons_id">
+                        
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                  <button type="submit" class="btn btn-primary">{% trans "Confirm" %}</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 {% endblock modal %}
 
 
 {% block javascript %}
 <link href="{% static 'css/cropper.min.css' %}" rel="stylesheet">
 <script src="{% static 'js/cropper.min.js' %}"></script>
-{% include 'account/crop.js' %}
 <script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+{% include 'account/crop.js' %}
+{% include 'account/invite_person.js' %}
+
 <script>
 {% for theme in user.profile.get_theme_list %}
-    var elem = document.querySelector('.js-switch1-{{forloop.counter}}');
-    var init = new Switchery(elem, { color: '#ED5565' });
+    var elem1{{forloop.counter}} = document.querySelector('.js-switch1-{{forloop.counter}}');
+    var init1{{forloop.counter}} = new Switchery(elem1{{forloop.counter}}, { color: '#ED5565' });
 {% endfor %}
 
 {% for theme in user.profile.get_invited_theme %}
-    var elem = document.querySelector('.js-switch2-{{forloop.counter}}');
-    var init = new Switchery(elem, { color: '#ED5565' });
+    var elem2{{forloop.counter}} = document.querySelector('.js-switch2-{{forloop.counter}}');
+    var init2{{forloop.counter}} = new Switchery(elem2{{forloop.counter}}, { color: '#ED5565' });
 {% endfor %}
+
+
 </script>
 
 {% endblock javascript %}

@@ -43,11 +43,8 @@ class Theme(models.Model):
     def get_theme_post(self):
         return self.posts.all()
 
-    # @property
-    # def invitee_count(self):
-    #     return self.invite_user_set.count()
-
     def get_invitee_all(self):
+        print(self.invite_user_set.all())
         return self.invite_user_set.all()
 
 class Invitee(models.Model):

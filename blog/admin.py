@@ -42,4 +42,4 @@ class BucketAdmin(admin.ModelAdmin):
 class InviteeAdmin(admin.ModelAdmin):
     class Meta:
         model = Invitee
-    list_display = ['id', 'user', 'theme']
+    list_display = ['id', 'theme_id', 'theme', 'user',  'create_dt']

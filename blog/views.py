@@ -255,8 +255,9 @@ def invite_persons(request, theme_id):
     theme = get_object_or_404(Theme, id=theme_id)
 
     if request.method == 'POST':
-        persons_id = request.cleaned_data.getlist('persons_id')
-
+        persons_id = request.POST.getlist('persons_id')
+        print(persons_id)
+        
         if persons_id:
             for person_id in persons_id:
                 person = get_object_or_404(Profile, id=person_id)
