@@ -14,8 +14,7 @@ urlpatterns = [
     url(r'^bucket/$', views.post_bucket, name='post_bucket'),
     url(r'^bucket_list/$', views.my_bucket_list, name='my_bucket_list'),
 
-    url(r'^(?P<username>[\w@-_\.]+)/(?P<id>\d+)/$', views.user_theme_list, 
-            name='user_theme_list'),
+    url(r'^(?P<id>\d+)/$', views.user_theme_list, name='user_theme_list'),
 
     url(r'^detail/$', views.post_detail, name='post_detail'),
 

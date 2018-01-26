@@ -136,25 +136,3 @@ def change_password(request):
     return render(request, 'account/password.html', {'form': form})
 
 
-@login_required
-@require_POST
-def make_friend(request):
-    from_user = request.user.profile
-    pk = request.POST.get('pk')
-    to_user = get_object_or_404(Profile, pk=pk)
-    relation, created = Relation.objects.get_or_create(from_user=from_user, to_user=to_user)
-    relation, created = Relation.objects.get_or_create(from_user=to_user, to_user=from_user)
-
-    if created:
-        message = 'Friends'
-        status = 1
-    else:
-        relation.delete()
-        message = '팔로우 취소'
-        status = 0
-
-    context = {
-        'message': message,
-        'status': status,
-    }
-    return HttpResponse(json.dumps(context), content_type="application/json")

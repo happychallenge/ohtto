@@ -44,6 +44,8 @@ def theme_add(request):
             theme.author = request.user
             theme.save()
 
+            Invitee.objects.create(user=request.user, theme=theme)
+            
             persons_id = request.POST.getlist('persons_id')
 
             if persons_id:

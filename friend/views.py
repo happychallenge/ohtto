@@ -97,6 +97,5 @@ def reject_friend(request):
 
     qs = FriendshipRequest.objects.filter(to_user=to_user, rejected=True) 
     rejected_list = [u.from_user for u in qs]
-    print(rejected_list)
     return render(request, "friend/ajax_rejected_list.html", { 'rejected_list': rejected_list})
 

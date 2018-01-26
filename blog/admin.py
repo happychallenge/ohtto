@@ -16,7 +16,7 @@ class PostAdmin(admin.ModelAdmin):
     class Meta:
         model = Post
     list_display = [ 'id', 'theme', 'lat', 'lng', 'author']
-    list_editable = ['theme']
+    # list_editable = ['theme']
 
 
 @admin.register(Content)

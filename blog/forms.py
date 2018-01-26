@@ -19,7 +19,7 @@ class PostForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         if self.instance:
-            self.fields['theme'].queryset = Theme.objects.filter(author=user)
+            self.fields['theme'].queryset = Theme.objects.filter(invitee__user=user)
 
 
 class PostEditForm(forms.ModelForm):
@@ -37,8 +37,10 @@ class PostEditForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(PostEditForm, self).__init__(*args, **kwargs)
+        print("Post Theme")
         if self.instance:
-            self.fields['theme'].queryset = Theme.objects.filter(author=user)
+            self.fields['theme'].queryset = Theme.objects.filter(invitee__user=user)
+
 
 class ThemeForm(forms.ModelForm):
     public = forms.BooleanField(label=_("Public"), required=False,

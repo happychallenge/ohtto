@@ -5,9 +5,12 @@
         
         <a href="{% if user == post.author %}{% url 'user_profile' %}{% else %}{% url 'blog:friend_profile' post.author.username %}{% endif %}">
             <img alt="image" width="30px" class="img-circle" src="{% if post.author.profile.picture %} {{ post.author.profile.picture.url }} {% else %} {% static 'image/nouser.png' %}{% endif %}">
-            <strong> {{ post.author.profile.nickname }}</strong>
+            <strong> {{ post.author.profile.nickname }}</strong> 
         </a>
-        
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'blog:user_theme_list' post.theme.id %}"> 
+            <small>({{post.theme}})</small>
+        </a>
     </div>
     <div class="ibox-content">
         <div class="text-center">

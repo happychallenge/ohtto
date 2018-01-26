@@ -17,7 +17,7 @@
                 <div class="forum-icon">
                     <i class="fa fa-shield"></i>
                 </div>
-                <a href="{% url 'blog:user_theme_list' user.username theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
+                <a href="{% url 'blog:user_theme_list' theme.id %}" class="forum-item-title"> {{theme.name}} </a> 
             </div>
 
         {% if not profile %}
@@ -60,13 +60,14 @@
         <h3>Invited</h3>
     </div>
 {% for theme in user.profile.get_invited_theme %}
+  {% if theme.author != user %}
     <div class="forum-item">
         <div class="row">
             <div class="col-xs-12 col-sm-5">
                 <div class="forum-icon">
                     <i class="fa fa-shield"></i>
                 </div>
-                <a href="{% url 'blog:user_theme_list' theme.author.username theme.id %}" class="forum-item-title"> ({{theme.author.first_name}}的) {{theme.name}} </a> 
+                <a href="{% url 'blog:user_theme_list' theme.id %}" class="forum-item-title"> ({{theme.author.profile.nickname}})'s {{theme.name}} </a> 
             </div>
             <div class="col-xs-6 col-sm-1 forum-info">
                 <span class="views-number">
@@ -87,4 +88,5 @@
             
         </div>
     </div>
+  {% endif %}
 {% endfor %}

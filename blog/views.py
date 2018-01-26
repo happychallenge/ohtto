@@ -28,7 +28,7 @@ def index(request, tag=None):
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set,
                             tag_set__tag__iexact=tag) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile')[:50]
+            .select_related('author__profile', 'theme')[:50]
         context = {'post_list': post_list, 'tag': tag}
     else:
         post_list = Post.objects.filter(is_public=True, author__profile__in=friend_set) \
@@ -55,11 +55,11 @@ def friend_profile(request, username):
 
     post_list = Post.objects.filter(author=friend, is_public=True) \
             .prefetch_related('tag_set', 'like_user_set__profile', 'contents', 'comments', 'bucket_set') \
-            .select_related('author__profile')[:30]
+            .select_related('author__profile', 'theme')[:30]
     return render(request, 'blog/index.html', {'post_list':post_list, 'friend':friend, 'profile': True})
 
 
-def user_theme_list(request, username, id):
+def user_theme_list(request, id):
     theme = get_object_or_404(Theme, id=id)
     if request.user == theme.author:
         post_list = Post.objects.filter(theme=theme)
@@ -164,7 +164,6 @@ def post_add(request):
                 content = Content()
             # Read Position from Picture
                 image = Image.open(filename)
-                print(filename)
                 lat, lng, dt = get_lat_lon_dt(image)
                 if lat != 0.0:
                     mgLat, mgLng = transform(lat, lng)
@@ -178,7 +177,6 @@ def post_add(request):
 
                 try:
                     exif = dict(image._getexif().items())
-                    print(exif)
 
                     if exif:
                         if exif[274] == 3:
@@ -236,6 +234,7 @@ def post_add(request):
 
     else:
         form = PostForm(user=request.user)
+        print("POstForm :",form)
         return render(request, 'blog/post_add.html', {'form': form})
 
 
@@ -257,7 +256,7 @@ def invite_persons(request, theme_id):
     if request.method == 'POST':
         persons_id = request.POST.getlist('persons_id')
         print(persons_id)
-        
+
         if persons_id:
             for person_id in persons_id:
                 person = get_object_or_404(Profile, id=person_id)
