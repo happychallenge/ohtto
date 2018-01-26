@@ -65,6 +65,13 @@ function initMap() {
     handleLocationError(false, infoWindow, map.getCenter());
   }
 
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ?
+                                'Error: The Geolocation service failed.' :
+                                'Error: Your browser doesn\'t support geolocation.');
+  }
+
   var locations = [
     {% for post in post_list %}
       {% if post.lat and post.lat != 0.0 and post.lat is not None %}
