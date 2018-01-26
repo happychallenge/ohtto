@@ -16,7 +16,11 @@ window.addEventListener('resize', function(event) {
 
 $("#btn_my_location").click(function(evt){
   evt.preventDefault();
-  window.location.href = "{% url 'blog:current_location' %}?lat=" + myLat + "&lng=" + myLng;
+  if (typeof myLat != 'undefined'){
+    window.location.href = "{% url 'blog:current_location' %}?lat=" + myLat + "&lng=" + myLng;
+  } else {
+    alert("Geolocation is blocked by broswer, please check the broswer setting.")
+  }
 });
 
 function initMap() {
