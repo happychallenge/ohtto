@@ -29,12 +29,12 @@
         <div class="ibox-content">
           <div class="col-sm-6">
               <h2 class="m-t-none m-b">Login</h2>
-
+              <p> 계정이 없는 분은 바로 "Log in" 버턴을 누르면 가능합니다. </p>
               <form method="post" action="{% url 'login' %}" role="form">
                   {% csrf_token %}
                   <div class="form-group{% if form.username.errors %} has-error{% endif %}">
                     <label>Email</label> 
-                    <input type="email" id='username' name="username" placeholder="Enter email" class="form-control">
+                    <input type="email" id='username' name="username" value="happy@daum.net" class="form-control">
                     {% for error in form.username.errors %}
                         <label class="control-label">{{ error }}</label>
                     {% endfor %}
@@ -42,7 +42,7 @@
 
                   <div class="form-group{% if form.password.errors %} has-error{% endif %}">
                     <label>Password</label> 
-                    <input type="password" id='password' name="password" placeholder="Enter email" class="form-control">
+                    <input type="password" id='password' name="password" value="1234qwer" class="form-control">
                     {% for error in form.password.errors %}
                         <label class="control-label">{{ error }}</label>
                     {% endfor %}
