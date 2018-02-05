@@ -114,6 +114,17 @@ class Post(models.Model):
     def get_tag_set(self):
         return self.tag_set.all()
 
+    def get_content_color(self):
+        tag_set = self.get_tag_set()
+        food = Tag.objects.get(tag="food")
+        travel = Tag.objects.get(tag="travel")
+        if food in tag_set:
+            return "#006633"
+        elif travel in tag_set:
+            return "#0000ff"
+        else:
+            return "#ac00e0"
+
 
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)

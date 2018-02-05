@@ -75,7 +75,7 @@ function initMap() {
   var locations = [
     {% for post in post_list %}
       {% if post.lat and post.lat != 0.0 and post.lat is not None %}
-        {id: {{post.id}}, location: {lat: {{post.lat}}, lng: {{post.lng}} } },
+        {id: {{post.id}}, location: {lat: {{post.lat}}, lng: {{post.lng}} }, color: '{{ post.get_content_color }}' },
       {% endif %}
     {% endfor %}
   ];
@@ -98,7 +98,7 @@ function initMap() {
       var position = locations[i].location;
       var id = locations[i].id;
       var title = locations[i].title;
-      var color = '#ac00e0';
+      var color = locations[i].color;
 
 
       var marker = new google.maps.Marker({
