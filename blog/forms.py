@@ -17,7 +17,7 @@ class PostForm(forms.ModelForm):
     )
     class Meta:
         model = Post
-        fields = ['theme', 'pictures', 'text',  'is_public', 'is_location']
+        fields = ['pictures', 'theme', 'text',  'is_public', 'is_location']
 
     def __init__(self, user, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
